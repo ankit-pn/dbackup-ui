@@ -1,0 +1,16 @@
+version: "3"
+services:
+  dbackup-server:
+    image: dbackup-server
+    ports:
+      - "8000:80"
+    environment:
+      - CLIENT_ORIGIN=http://localhost:3000
+    volumes:
+      - /home/pain/mnt/credentials.db:/dbackup-server/credentials.db
+      - /home/pain/mnt/saved_data:/dbackup-server/saved_data
+
+  dbackup-ui:
+    image: dbackup-ui
+    ports:
+      - "3000:80"
