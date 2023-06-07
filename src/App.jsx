@@ -17,7 +17,7 @@ function App() {
     <Router>
       <div>
         <Routes>
-          <Route exact path="/listfolder" element={<AfterLogin />} />
+          <Route path="/listfolder" element={<AfterLogin />} />
           <Route exact path="/privacypolicies" element={<MainApp accessToken={accessToken} mainAppContent={<PrivacyPolicy />} />} />
           <Route exact path="/features" element={<MainApp accessToken={accessToken} mainAppContent={<Features />} />} />
           <Route exact path="/aboutus" element={<MainApp accessToken={accessToken} mainAppContent={<AboutUs />} />} />

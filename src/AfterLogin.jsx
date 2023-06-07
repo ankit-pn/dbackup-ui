@@ -2,13 +2,41 @@ import NotFound from './NotFound'
 import MainApp from './MainApp'
 import Cookies from 'js-cookie';
 import MainAppContent from './MainAppContent';
+import { useEffect,useState } from 'react';
 const AfterLogin = () => {
-    const accessToken = Cookies.get('access_token');
-    console.log(accessToken)
-    if(accessToken===undefined)
-    return <NotFound></NotFound>
-    else{
-    return <MainApp accessToken={accessToken} mainAppContent={<MainAppContent accessToken={accessToken}/>}/>
+    const [loading, setLoading] = useState(true);
+    const [accessToken, setAccessToken] = useState('');
+    useEffect(() => {
+      // Function to extract the token from the query parameter and set it as a cookie
+      const setTokenAsCookie = () => {
+        // Get the token from the query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (token) {
+          document.cookie = `access_token=${token}; secure; SameSite=None; path=/`;
+          setAccessToken(token);
+        } else {
+         const cookieToken = Cookies.get('access_token');
+         if (cookieToken) {
+           setAccessToken(cookieToken);
+         }
+        }
+        setLoading(false);
+      };
+      
+      // Call the function to set the token as a cookie when the component mounts
+      setTokenAsCookie();
+    }, []);
+
+    if (loading) {
+      // Display a loading state until the token is set
+      return <div>Loading...</div>;
     }
+    if (!accessToken) {
+      // If the token is not available, render the NotFound component
+      return <NotFound />;
+    } 
+    return <MainApp accessToken={accessToken} mainAppContent={<MainAppContent accessToken={accessToken}/>}/>
 };
 export default AfterLogin;
