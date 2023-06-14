@@ -6,177 +6,152 @@ const AboutUs = () => {
       maw={800}
       mx="auto"
       sx={(theme) => ({
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-        textAlign: 'center',
+        backgroundColor:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[6]
+            : theme.colors.gray[0],
+        textAlign: "center",
         padding: theme.spacing.xl,
         borderRadius: theme.radius.md,
-        cursor: 'pointer',
+        cursor: "pointer",
 
-        '&:hover': {
-          backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
+        "&:hover": {
+          backgroundColor:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[5]
+              : theme.colors.gray[1],
         },
       })}
     >
       <Title order={1} color="Blue" align="center">
-        AboutUs
+        About Us
       </Title>
       <Divider my="md"></Divider>
-      <Text fz="xl" fw={700} align="left" span>
-        Effective Date:{' '}
-      </Text>
-      <Text span aling="left">
-        {' '}
-        27/12/23
-      </Text>
+
+      <Space h="md" />
+      <Title order={2} align="center" color="blue">
+        Empowering Data Protection with dBackup
+      </Title>
+      <Space h="md" />
+      <Title order={4} align="left">
+        Welcome to dBackup, where we are passionate about ensuring the safety
+        and accessibility of your valuable data. At dBackup, we believe that
+        everyone deserves a reliable and user-friendly solution for securing
+        their digital assets. Our dedicated team of experts has developed a
+        cutting-edge cloud service that empowers individuals and businesses to
+        back up their data seamlessly.
+      </Title>
       <Space h="md" />
       {/* <Text fz="xl" fw={700} color="Blue" align='left'>
           1. Information We Collect
         </Text> */}
       <Title order={3} color="Blue" align="left">
-        1. Information We Collect
+        Our Mission
       </Title>
-      <Space h="sm" />
-      <Title order={4} align="left">
-        1.1 Personal Information
-      </Title>
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        We may collect the following personal information when you use dBackup:
-      </Text>
-      <List withPadding size="sm" style={{ textAlign: 'left' }}>
-        <List.Item>Your name</List.Item>
-        <List.Item>Email address</List.Item>
-        <List.Item>Google Drive account information (access token and refresh token)</List.Item>
-        <List.Item>Backup scheduling preferences</List.Item>
-      </List>
-      <Space h="sm" />
-      <Title order={4} align="left">
-        1.2 Automatically Collected Information
-      </Title>
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        We may also collect certain information automatically when you use dBackup, including:
-      </Text>
-      <List withPadding size="sm" style={{ textAlign: 'left' }}>
-        <List.Item>Log data (e.g., IP address, browser type, pages visited)</List.Item>
-        <List.Item>Usage data (e.g., interactions with the Service, features used)</List.Item>
-        <List.Item>Device information (e.g., device type, operating system)</List.Item>
-      </List>
-      <Space h="md" />
-      <Title order={3} color="Blue" align="left">
-        2. How We Use Your Information
-      </Title>
-      <Space h="sm" />
-      <Title order={4} align="left">
-        2.1 Provide and Improve the Service
-      </Title>
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        We use your personal information to provide and improve dBackup, including:
-      </Text>
-      <List withPadding size="sm" style={{ textAlign: 'left' }}>
-        <List.Item>Backing up your Google Drive folder as scheduled</List.Item>
-        <List.Item>Authenticating and connecting to your Google Drive account</List.Item>
-        <List.Item>Personalizing and enhancing your user experience</List.Item>
-        <List.Item>Analyzing usage patterns to improve dBackup's performance and functionality</List.Item>
-        <List.Item>Responding to your inquiries and providing customer support</List.Item>
-      </List>
-      <Space h="sm" />
-      <Title order={4} align="left">
-        2.2 Communications
-      </Title>
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        We may use your email address to send you administrative and promotional communications related to dBackup. You
-        can opt-out of promotional communications at any time by following the instructions provided in the
-        communication.
-      </Text>
-      <Space h="sm" />
-      <Title order={4} align="left">
-        2.3 Aggregated Data
-      </Title>
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        We may aggregate and anonymize your personal information for statistical and analytical purposes. Aggregated
-        data does not personally identify you and may be used for any lawful purpose.
+      <Text ta="left" style={{ fontSize: "15px", margin: "4px" }}>
+        Our mission is simple: to provide a robust and intuitive platform that
+        enables users to effortlessly protect their data from loss, corruption,
+        or accidental deletion. We understand the importance of digital
+        information in today's world, where memories, business documents, and
+        critical files are increasingly stored in the cloud. Our goal is to
+        empower individuals and businesses to take control of their data backup
+        strategy and enjoy peace of mind, knowing that their information is safe
+        and easily recoverable.
       </Text>
       <Space h="md" />
       <Title order={3} color="Blue" align="left">
-        3. How We Share Your Information
+        The dBackup Difference
       </Title>
-      <Space h="sm" />
-      <Title order={4} align="left">
-        3.1 Service Providers
-      </Title>
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        We may share your personal information with third-party service providers who assist us in providing and
-        improving dBackup. These service providers are bound by confidentiality obligations and are not permitted to use
-        your personal information for any other purpose.
+      <Text ta="left" style={{ fontSize: "15px", margin: "4px" }}>
+        What sets dBackup apart from other data backup services? We pride
+        ourselves on offering a comprehensive suite of features that prioritize
+        simplicity, customization, and reliability. Here's what makes dBackup
+        the preferred choice for individuals and businesses alike:
       </Text>
       <Space h="sm" />
       <Title order={4} align="left">
-        3.2 Legal Requirements
+        1. User-Friendly Interface
       </Title>
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        We may disclose your personal information if required to do so by law or in response to a valid legal request,
-        such as a court order or subpoena.
+      <Text ta="left" style={{ fontSize: "15px", margin: "4px" }}>
+        We believe that technology should be accessible to all. Our
+        user-friendly interface ensures that you can effortlessly navigate the
+        dBackup platform, regardless of your technical expertise. We've designed
+        it with simplicity in mind, enabling you to focus on what matters
+        most—your data.
       </Text>
       <Space h="sm" />
       <Title order={4} align="left">
-        3.3 Business Transfers
+        2. Customizable Backup Scheduling
       </Title>
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        If we are involved in a merger, acquisition, or sale of all or a portion of our assets, your personal
-        information may be transferred as part of that transaction. We will notify you via email and/or a prominent
-        notice on our website of any change in ownership or use of your personal information.
+      <Text ta="left" style={{ fontSize: "15px", margin: "4px" }}>
+        We understand that every user has unique backup requirements. With
+        dBackup, you have the flexibility to schedule backups according to your
+        specific needs. Whether you prefer immediate backups, regular intervals,
+        or a personalized schedule, our platform caters to your preferences.
       </Text>
-      <Space h="md" />
-      <Title order={3} color="Blue" align="left">
-        4. Data Security
-      </Title>
       <Space h="sm" />
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        We take reasonable measures to protect your personal information from unauthorized access, disclosure,
-        alteration, and destruction. However, no method of transmission over the internet or electronic storage is 100%
-        secure, and we cannot guarantee absolute security.
-      </Text>
-      <Space h="md" />
-      <Title order={3} color="Blue" align="left">
-        5. Third-Party Links and Services
+      <Title order={4} align="left">
+        3. Secure and Reliable Infrastructure
       </Title>
-      <Space h="sm" />
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        dBackup may contain links to third-party websites or services that are not operated by us. We have no control
-        over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites
-        or services. We encourage you to review the privacy policies of these third parties before providing any
-        personal information.
+      <Text ta="left" style={{ fontSize: "15px", margin: "4px" }}>
+        Your data deserves the highest level of protection. That's why we have
+        invested in a secure and reliable infrastructure that utilizes advanced
+        encryption protocols to keep your files safe. Our dedicated team
+        continuously monitors our systems, ensuring optimal performance and
+        uptime.
       </Text>
-      <Space h="md" />
+      <Space h="sm" />
+      <Title order={4} align="left">
+        4. Generous Storage Limits
+      </Title>
+      <Text ta="left" style={{ fontSize: "15px", margin: "4px" }}>
+        We believe in providing ample space for your data backups. With a
+        generous storage limit of 20 GB, you can safeguard a substantial amount
+        of files, photos, documents, and more. Should you require additional
+        storage, our support team is here to assist you in expanding your
+        allocation seamlessly
+      </Text>
+      <Space h="sm" />
+      <Title order={4} align="left">
+        5. Easy Data Retrieval
+      </Title>
+      <Text ta="left" style={{ fontSize: "15px", margin: "4px" }}>
+        We understand that the purpose of data backup is to have quick access to
+        your files when you need them. With dBackup, retrieving your backed-up
+        data is as simple as a few clicks. We provide compressed zip folders for
+        easy download, allowing you to restore your files promptly.
+      </Text>
+      <Space h="sm" />
 
-      <Title order={3} color="Blue" align="left">
-        6. Children's Privacy
+      <Title order={4}  align="left">
+        6. Transparent Data Management
       </Title>
-      <Space h="sm" />
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        dBackup is not intended for use by individuals under the age of 16. We do not knowingly collect personal
-        information from children under 16. If we become aware that we have collected personal information from a child
-        under 16, we will take steps to delete such information as soon as possible. If you believe that we may have
-        collected personal information from a child under 16, please contact us.
+      <Text ta="left" style={{ fontSize: "15px", margin: "4px" }}>
+        Transparency is a core value at dBackup. We believe that you should have
+        full control over your backup data. Our platform enables you to manage
+        and delete specific backup files, helping you maintain an organized and
+        clutter-free backup environment.
       </Text>
       <Space h="md" />
-      <Title order={3} color="Blue" align="left">
-        7. Changes to this Privacy Policy
+      <Title order={3} color="Blue" align="center">
+        Join dBackup Today!
       </Title>
       <Space h="sm" />
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        We may update this Privacy Policy from time to time. We will notify you of any changes by posting the updated
-        Privacy Policy on our website. You are advised to review this Privacy Policy periodically for any changes.
+      <Text ta="left" style={{ fontSize: "15px", margin: "4px" }}>
+        Join thousands of satisfied users who have chosen dBackup as their go-to
+        solution for data backup. Whether you are an individual seeking to
+        protect your personal files or a business aiming to safeguard critical
+        information, dBackup is here to support you every step of the way. Our
+        dedicated team is committed to delivering exceptional customer service
+        and ensuring that your data is handled with the utmost care and
+        security. Experience the peace of mind that comes with knowing your data
+        is backed up reliably and conveniently. Start your journey with dBackup
+        today and discover a new level of data protection. Together, we can
+        empower you to take control of your digital assets and embrace a
+        worry-free data backup solution. Protect, secure, and preserve your data
+        with dBackup—your trusted partner in data backup.
       </Text>
       <Space h="md" />
-      <Title order={3} color="Blue" align="left">
-        8. Contact Us
-      </Title>
-      <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-        <Text ta="left" style={{ fontSize: '15px', margin: '4px' }}>
-          If you have any questions about this Privacy Policy or our data practices, please contact us at [insert
-          contact information].
-        </Text>
-      </Text>
     </Box>
   );
 };
