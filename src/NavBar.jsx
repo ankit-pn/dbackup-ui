@@ -20,41 +20,63 @@ const NavBar = ({mainContent}) => {
     }
 
     return (
-        <AppShell
-            padding="md"
-            header={<Header
-                height={60}
-                p="xs"
-            >
-                <Grid justify="flex-end" >
-
-                    <Grid.Col span={2}><img src={iim} alt="logo" style={{ maxHeight: '100%', maxWidth: '100%' }} /></Grid.Col>
-                    <Grid.Col span="auto"></Grid.Col>
-                    <Grid.Col span={2}> <Button variant="subtle" onClick={handlePrivacyButton}>
-                        Privacy Policy
-                    </Button></Grid.Col>
-                    <Grid.Col span={2}> <Button variant="subtle" onClick={handleFeaturesButton}>
-                        Features
-                    </Button></Grid.Col>
-                    <Grid.Col span={2}> <Button variant="subtle" onClick={handleAboutButton}>
-                        About
-                    </Button></Grid.Col>
-                    <Grid.Col span={2} p="md"> 
-                        <Flex justify="space-between" align="center" >
-                     <Button variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }} onClick={handleConnectNow}>
-                        Connect
-                    </Button> <Button variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }} onClick={handleLoginNow
-                }>
-                            Login
-                        </Button> 
-                        </Flex>
-                        </Grid.Col>
-                </Grid>
-            </Header>}
-        >
-            {mainContent}
-           
-        </AppShell>
-    )
+      <AppShell
+        padding="md"
+        header={
+          <Header height={60} p="xs">
+            <Grid justify="flex-end">
+              <a href='/'>
+                <Grid.Col span={2}>
+                  <img
+                    src={iim}
+                    alt="logo"
+                    style={{ maxHeight: "100%", maxWidth: "100%" }}
+                  />
+                </Grid.Col>
+              </a>
+              <Grid.Col span="auto"></Grid.Col>
+              <Grid.Col span={2}>
+                {" "}
+                <Button variant="subtle" onClick={handlePrivacyButton}>
+                  Privacy Policy
+                </Button>
+              </Grid.Col>
+              <Grid.Col span={2}>
+                {" "}
+                <Button variant="subtle" onClick={handleFeaturesButton}>
+                  Features
+                </Button>
+              </Grid.Col>
+              <Grid.Col span={2}>
+                {" "}
+                <Button variant="subtle" onClick={handleAboutButton}>
+                  About
+                </Button>
+              </Grid.Col>
+              <Grid.Col span={2} p="md">
+                <Flex justify="space-between" align="center">
+                  <Button
+                    variant="gradient"
+                    gradient={{ from: "indigo", to: "cyan" }}
+                    onClick={handleConnectNow}
+                  >
+                    Connect
+                  </Button>{" "}
+                  <Button
+                    variant="gradient"
+                    gradient={{ from: "indigo", to: "cyan" }}
+                    onClick={handleLoginNow}
+                  >
+                    Login
+                  </Button>
+                </Flex>
+              </Grid.Col>
+            </Grid>
+          </Header>
+        }
+      >
+        {mainContent}
+      </AppShell>
+    );
 }
 export default NavBar

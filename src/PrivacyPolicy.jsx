@@ -1,6 +1,6 @@
 import { Space, Text, Title, Divider, List } from '@mantine/core';
 import { Box } from '@mantine/core';
-import { Tex } from 'tabler-icons-react';
+
 const PrivacyPolicy = () => {
   return (
     <Box

@@ -1,15 +1,8 @@
-import { AppShell, Header, Grid, Button, Space, Text, Flex, Title, Table, Overlay, Loader } from '@mantine/core';
+import { AppShell, Header, Grid, Button, Text, Flex, } from '@mantine/core';
 import iim from './logo/png/logo-no-background.png';
-import { TextInput, Checkbox, Group, Box } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { Input } from '@mantine/core';
-import { IconChevronDown } from '@tabler/icons-react';
-import { IconTrash, IconDownload } from '@tabler/icons-react';
-import axios from 'axios'
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import MainAppContent from './MainAppContent';
-const api_server = process.env.REACT_APP_API_SERVER;
+
 const MainApp = (props) => {
     const accessToken = props.accessToken;
     const [email, setEmail] = useState('');
@@ -56,7 +49,9 @@ const MainApp = (props) => {
           <Header height={60} p="xs">
             <Grid justify="flex-end">
               <Grid.Col span={2}>
+                <a href="/">
                 <img src={iim} alt="logo" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+                </a>
               </Grid.Col>
               <Grid.Col span="auto"></Grid.Col>
               <Grid.Col span={2}>
