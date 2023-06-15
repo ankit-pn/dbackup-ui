@@ -23,8 +23,7 @@ const HomePage = () => {
             <Textt
               content={`✔ Schedule your backup and we will automatically backup your\n\nfolder`}
             />
-            <Textt content="✔ Download folder whenever you want without going to any hustle" />
-            <Textt content="✔ All backups are securely encrypted and stored in the cloud." />
+            <Textt content="✔ Download your folder whenever you want without going to any hustle" />
             <Space h="xl" />
             <Flex
               mih={50}
