@@ -153,7 +153,7 @@ const PrivacyPolicy = () => {
         of our assets, your personal information may be transferred as part of
         that transaction. We will notify you via email and/or a prominent notice
         on our website of any change in ownership or use of your personal
-        information.
+        informations.
       </Text>
       <Space h="md" />
       <Title order={3} color="Blue" align="left">
