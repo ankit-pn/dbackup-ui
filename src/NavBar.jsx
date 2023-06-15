@@ -25,15 +25,17 @@ const NavBar = ({mainContent}) => {
         header={
           <Header height={60} p="xs">
             <Grid justify="flex-end">
-              <a href='/'>
+             
                 <Grid.Col span={2}>
+                     <a href='/'>
                   <img
                     src={iim}
                     alt="logo"
                     style={{ maxHeight: "100%", maxWidth: "100%" }}
                   />
+                </a>
                 </Grid.Col>
-              </a>
+            
               <Grid.Col span="auto"></Grid.Col>
               <Grid.Col span={2}>
                 {" "}
