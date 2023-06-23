@@ -107,7 +107,7 @@ const HomePage = () => {
                 direction="row"
               >
                 <Button
-                  variant="light"
+                  style={{ color: "gray", backgroundColor: "white", boxShadow: '0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)'}}
                   radius="xl"
                   onClick={handleConnectNow}
                 >
@@ -338,11 +338,9 @@ Seamless and Effortless Navigation Providing an Intuitive User Experience that E
             </Title>
             <Flex direction="row" justify="center" align="center">
               <Button
-                variant="light"
-                color="black"
                 radius="xl"
                 onClick={handleConnectNow}
-                style={{ margin: "40px" }}
+                style={{ margin: "40px",color: "gray", backgroundColor: "white", boxShadow: '0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)' }}
               >
                 <Text>Connect {"Google Drive  "}</Text>
                 <img
