@@ -16,6 +16,12 @@ const AfterLogin = () => {
         if (token) {
           document.cookie = `access_token=${token}; secure; SameSite=None; path=/`;
           setAccessToken(token);
+          // Clear the URL search parameters
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
         } else {
          const cookieToken = Cookies.get('access_token');
          if (cookieToken) {
