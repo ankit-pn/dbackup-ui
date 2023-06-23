@@ -77,7 +77,7 @@ function App() {
             path="/pageinconstruction"
             element={<NavBar mainContent={<PageInConstruction />} />}
           />
-          <Route exact path="/listfolder" element={<Error />} />
+          <Route exact path="/listfolder" element={<AfterLogin />} />
           <Route
             exact
             path="/privacypolicies"
