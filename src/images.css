@@ -1,0 +1,21 @@
+.smallcard-image {
+border-radius: 10000px;
+width: 150px;
+margin: 10px;
+}
+.card-image{
+        width: 150px;
+        margin: 10px;
+}
+.homepage-productivity-image {
+    margin-right: 40px;
+    width: 200px;
+    border-radius: 20px;
+}
+
+.carsh-card-image{
+    align-self: center;
+    width: 112px;
+    height: 110px;
+}
+

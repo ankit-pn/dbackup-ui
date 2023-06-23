@@ -1,8 +1,13 @@
 import { AppShell, Header, Grid, Button, Flex} from '@mantine/core';
 import iim from './logo/png/logo-no-background.png'
+import './font.css'
+import './navbar.css'
+import drivelogo from './logo/logo_drive_2020q4_color_2x_web_64dp.png'
+import signingwithgoogle from './logo/btn_google_signin_light_normal_web@2x.png'
 const api_server = process.env.REACT_APP_API_SERVER;
-const NavBar = ({mainContent}) => {
 
+
+const NavBar = ({mainContent}) => {
     const handleConnectNow = () => {
         window.location.href = `${api_server}/connect`;
     }
@@ -23,54 +28,87 @@ const NavBar = ({mainContent}) => {
       <AppShell
         padding="md"
         header={
-          <Header height={60} p="xs">
-            <Grid justify="flex-end">
-             
-                <Grid.Col span={2}>
-                     <a href='/'>
+          <Header
+            height={60}
+            style={{ backgroundColor: "rgba(39, 245, 198, 0.3)" }}
+          >
+            <Grid
+              p="xs"
+              className="navbar-grid"
+              justify="flex-start"
+              height={60}
+            >
+              <Grid.Col span={2}>
+                <a href="/">
                   <img
                     src={iim}
                     alt="logo"
-                    style={{ maxHeight: "100%", maxWidth: "100%" }}
+                    style={{
+                      maxHeight: "100%",
+                      maxWidth: "100%",
+                      alignSelf: "left",
+                    }}
                   />
                 </a>
-                </Grid.Col>
-            
-              <Grid.Col span="auto"></Grid.Col>
+              </Grid.Col>
               <Grid.Col span={2}>
                 {" "}
-                <Button variant="subtle" onClick={handlePrivacyButton}>
+                <Button
+                  variant="subtle"
+                  onClick={handlePrivacyButton}
+                  className="navbar-button"
+                  style={{ marginLeft: "100px" }}
+                >
                   Privacy Policy
                 </Button>
               </Grid.Col>
               <Grid.Col span={2}>
                 {" "}
-                <Button variant="subtle" onClick={handleFeaturesButton}>
+                <Button
+                  variant="subtle"
+                  onClick={handleFeaturesButton}
+                  className="navbar-button"
+                  style={{ marginLeft: "100px" }}
+                >
                   Features
                 </Button>
               </Grid.Col>
               <Grid.Col span={2}>
                 {" "}
-                <Button variant="subtle" onClick={handleAboutButton}>
+                <Button
+                  variant="subtle"
+                  onClick={handleAboutButton}
+                  className="navbar-button"
+                  style={{ marginLeft: "100px" }}
+                >
                   About
                 </Button>
               </Grid.Col>
-              <Grid.Col span={2} p="md">
+              <Grid.Col span={2}>
                 <Flex justify="space-between" align="center">
                   <Button
-                    variant="gradient"
-                    gradient={{ from: "indigo", to: "cyan" }}
                     onClick={handleConnectNow}
+                    className="navbar-button-1"
+                    variant="outline"
+                    style={{ marginLeft: "50px", marginButtom: "20px" }}
                   >
                     Connect
+                    <img
+                      src={drivelogo}
+                      alt="nan"
+                      style={{ width: "20px", marginLeft: "10px" }}
+                    />
                   </Button>{" "}
-                  <Button
-                    variant="gradient"
-                    gradient={{ from: "indigo", to: "cyan" }}
+                  <img
+                    src={signingwithgoogle}
+                    alt="nan"
+                    style={{
+                      width: "170px",
+                      marginLeft: "10px",
+                      marginButtom: "20px",
+                    }}
                     onClick={handleLoginNow}
-                  >
-                    Login
-                  </Button>
+                  />
                 </Flex>
               </Grid.Col>
             </Grid>

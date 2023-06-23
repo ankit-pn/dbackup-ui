@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta&family=Open+Sans:wght@300&family=Poppins&display=swap');
+.enhance-title{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    color: rgba(27, 27, 228, 0.772);
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.enhance-title-without-margin {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    color: rgba(27, 27, 228, 0.772);
+    font-size: 25px;
+}
+
+.homepage-bullet-font {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+.navbar-button{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+}
+
+.common-text{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 350;
+}
+
+.common-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 350;
+    font-size: small;
+}
+
+.smallcard-font-size{
+    font-size: medium;
+}
+
+.small-text{
+    font-size: small;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 450;
+    margin-left:100px;
+    margin-right:100px;
+}
+
+.red-text{
+    font-family: 'Poppins', sans-serif;
+    align-self: center;
+    color: red;
+    font-size: x-large;
+}
+
+.smaller-text{
+    font-family: 'Poppins', sans-serif;
+    font-size: smaller;
+    align-self: center;
+}
+
+.backup-down{
+     font-family: 'Poppins', sans-serif;
+    font-size: large;
+    align-self: center;
+}

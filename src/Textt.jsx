@@ -1,5 +1,5 @@
 import { Text } from '@mantine/core';
-
+import './font.css'
 function Textt(props) {
   return (
     <Text
@@ -9,6 +9,7 @@ function Textt(props) {
       ta="center"
       fz="md"
       fw={700}
+      className='homepage-bullet-font'
     >
       {props.content}
     </Text>
