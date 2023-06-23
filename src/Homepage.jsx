@@ -146,7 +146,7 @@ const HomePage = () => {
             className="enhance-title"
             style={{ marginBottom: "40px" }}
           >
-            How dBackUp enhance your productivity?
+            How does dBackUp enhance your productivity?
           </Title>
           <Flex direction="column">
             <Flex direction="row" className="homepage-productivity-flex-row">

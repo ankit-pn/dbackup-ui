@@ -50,7 +50,7 @@ const MainApp = (props) => {
         header={
           <Header
             height={60}
-            style={{ backgroundColor: "rgba(39, 245, 198, 0.3)" }}
+            style={{ backgroundColor: "rgba(39, 245, 198, 1)" }}
           >
             <Grid
               p="xs"

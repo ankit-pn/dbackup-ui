@@ -30,7 +30,7 @@ const NavBar = ({mainContent}) => {
         header={
           <Header
             height={60}
-            style={{ backgroundColor: "rgba(39, 245, 198, 0.3)" }}
+            style={{ backgroundColor: "rgba(39, 245, 198, 1)" }}
           >
             <Grid
               p="xs"
@@ -89,8 +89,8 @@ const NavBar = ({mainContent}) => {
                   <Button
                     onClick={handleConnectNow}
                     className="navbar-button-1"
-                    variant="outline"
-                    style={{ marginLeft: "50px", marginButtom: "20px" }}
+                    
+                    style={{ marginLeft: "50px", marginButtom: "20px", color:'gray',backgroundColor:'white' }}
                   >
                     Connect
                     <img
