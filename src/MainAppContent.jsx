@@ -8,6 +8,8 @@ import { IconTrash, IconDownload } from '@tabler/icons-react';
 import axios from 'axios'
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import "./font.css";
+import "./navbar.css";
 const api_server = process.env.REACT_APP_API_SERVER;
 const MainAppContent = (props) => {
     const accessToken = props.accessToken;
@@ -137,17 +139,15 @@ const MainAppContent = (props) => {
         fetchData();
 
     },[accessToken,loading,click]);
-    return ( <> <Grid>
+    return (
+      <div style={{ backgroundColor: "rgba(39, 245, 198, 0.05)" }}>
+        {" "}
+        <Grid>
           <Grid.Col span={9}>
             <Title order={3} align="center">
-              {/* {'Add '} */}
               <Text span c="blue" inherit>
-                {'Scheduled Backup List'}
+                {"Scheduled Backup List"}
               </Text>
-              {/* {'that you want to '} */}
-              {/* <Text span c="blue" inherit>
-              Backup
-            </Text> */}
             </Title>
             <Space h="md" />
             <Table highlightOnHover>
@@ -164,14 +164,18 @@ const MainAppContent = (props) => {
             </Table>
           </Grid.Col>
           <Grid.Col span="auto">
-            <img src={iim} alt="logo" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+            <img
+              src={iim}
+              alt="logo"
+              style={{ maxHeight: "100%", maxWidth: "100%" }}
+            />
             <Space h="xl" />
             <Title order={3}>
-              {'Add '}
+              {"Add "}
               <Text span c="blue" inherit>
-                {'folder '}
+                {"folder "}
               </Text>
-              {'that you want to '}
+              {"that you want to "}
               <Text span c="blue" inherit>
                 Backup
               </Text>
@@ -185,25 +189,33 @@ const MainAppContent = (props) => {
                   radius="md"
                   size="md"
                   withAsterisk
-                  {...form.getInputProps('folderName')}
+                  {...form.getInputProps("folderName")}
                 />
                 <Space h="md" />
                 <Input
                   component="select"
                   rightSection={<IconChevronDown size={14} stroke={1.5} />}
                   label="Choose Backup Type"
-                  {...form.getInputProps('scheduling_type')}
+                  {...form.getInputProps("scheduling_type")}
                 >
                   <option value="Backup Now">Backup Now</option>
-                  <option value="Backup after 1 hour">Backup after 1 hour</option>
-                  <option value="Backup whenever folder get avaiable">Backup whenever folder get avaiable</option>
-                  <option value="Schedule Custom Backup">Schedule Custom Backup</option>
+                  <option value="Backup after 1 hour">
+                    Backup after 1 hour
+                  </option>
+                  <option value="Backup whenever folder get avaiable">
+                    Backup whenever folder get avaiable
+                  </option>
+                  <option value="Schedule Custom Backup">
+                    Schedule Custom Backup
+                  </option>
                 </Input>
 
                 <Checkbox
                   mt="md"
                   label="I agree to term and conditions"
-                  {...form.getInputProps('termsOfService', { type: 'checkbox' })}
+                  {...form.getInputProps("termsOfService", {
+                    type: "checkbox",
+                  })}
                 />
 
                 <Group position="right" mt="md">
@@ -219,11 +231,11 @@ const MainAppContent = (props) => {
           <Overlay zIndex={1000} opacity={0.75} color="#fff">
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
               }}
             >
               <Loader size="md" />
@@ -232,8 +244,8 @@ const MainAppContent = (props) => {
             </div>
           </Overlay>
         )}
-        </>
-        )
+      </div>
+    );
 }
 
 export default MainAppContent

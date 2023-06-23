@@ -1,6 +1,8 @@
 import { AppShell, Header, Grid, Button, Text, Flex, } from '@mantine/core';
 import iim from './logo/png/logo-no-background.png';
 import { useEffect, useState } from 'react';
+import "./font.css";
+import "./navbar.css";
 import Cookies from 'js-cookie';
 
 const MainApp = (props) => {
@@ -46,42 +48,70 @@ const MainApp = (props) => {
       <AppShell
         padding="md"
         header={
-          <Header height={60} p="xs">
-            <Grid justify="flex-end">
+          <Header
+            height={60}
+            style={{ backgroundColor: "rgba(39, 245, 198, 0.3)" }}
+          >
+            <Grid
+              p="xs"
+              className="navbar-grid"
+              justify="flex-start"
+              height={60}
+            >
               <Grid.Col span={2}>
                 <a href="/">
-                <img src={iim} alt="logo" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+                  <img
+                    src={iim}
+                    alt="logo"
+                    style={{ maxHeight: "100%", maxWidth: "100%" }}
+                  />
                 </a>
               </Grid.Col>
-              <Grid.Col span="auto"></Grid.Col>
               <Grid.Col span={2}>
-                <Button variant="subtle" onClick={handlePrivacyButton}>
+                <Button
+                  variant="subtle"
+                  onClick={handlePrivacyButton}
+                  className="navbar-button"
+                  style={{ marginLeft: "100px" }}
+                >
                   Privacy Policy
                 </Button>
               </Grid.Col>
               <Grid.Col span={2}>
-                <Button variant="subtle" onClick={handleFeaturesButton}>
+                <Button
+                  variant="subtle"
+                  onClick={handleFeaturesButton}
+                  className="navbar-button"
+                  style={{ marginLeft: "100px" }}
+                >
                   Features
                 </Button>
               </Grid.Col>
               <Grid.Col span={2}>
-                <Button variant="subtle" onClick={handleAboutButton}>
+                <Button
+                  variant="subtle"
+                  onClick={handleAboutButton}
+                  className="navbar-button"
+                  style={{ marginLeft: "100px" }}
+                >
                   About
                 </Button>
               </Grid.Col>
-              <Grid.Col span={3} p="md">
+              <Grid.Col span={2} p="md">
                 <Flex justify="flex-start" align="center" gap="xs">
-                  <Text
-                    variant="gradient"
-                    gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                    sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
-                    ta="center"
-                    fz="md"
-                    fw={700}
+                  <Button
+                    className="navbar-button-1"
+                    variant="outline"
+                    style={{ marginLeft: "50px", marginButtom: "20px" }}
                   >
                     {email}
-                  </Text>
-                  <Button variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }} onClick={handleLogout}>
+                  </Button>
+                  <Button
+                    className="navbar-button-1"
+                    variant="outline"
+                    style={{ marginRight: "50px", marginButtom: "20px" }}
+                    onClick={handleLogout}
+                  >
                     Logout
                   </Button>
                 </Flex>
@@ -90,7 +120,7 @@ const MainApp = (props) => {
           </Header>
         }
       >
-       {props.mainAppContent}
+        {props.mainAppContent}
       </AppShell>
     );
 };

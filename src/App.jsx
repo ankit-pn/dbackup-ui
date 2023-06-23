@@ -10,6 +10,7 @@ import { BrowserRouter as Router,Route, Routes } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import MainApp from './MainApp';
 import PageInConstruction from './PageInConstruction';
+import Error from './Error';
 function App() {
   if(Cookies.get('access_token')!==undefined){
     const accessToken = Cookies.get('access_token')
@@ -76,7 +77,7 @@ function App() {
             path="/pageinconstruction"
             element={<NavBar mainContent={<PageInConstruction />} />}
           />
-          <Route exact path="/listfolder" element={<AfterLogin />} />
+          <Route exact path="/listfolder" element={<Error />} />
           <Route
             exact
             path="/privacypolicies"
