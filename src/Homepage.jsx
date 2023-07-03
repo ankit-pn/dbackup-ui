@@ -46,8 +46,8 @@ const HomePage = () => {
                  link: "/pageinconstruction",
                },
                {
-                 label: "Security",
-                 link: "/pageinconstruction",
+                 label: "Google API uses Disclosure",
+                 link: "/google-api-services-disclosure",
                },
                {
                  label: "Why DBackup",

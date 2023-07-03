@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import MainApp from './MainApp';
 import PageInConstruction from './PageInConstruction';
 import Error from './Error';
+import Disclosure from './Disclosure';
 function App() {
   if(Cookies.get('access_token')!==undefined){
     const accessToken = Cookies.get('access_token')
@@ -19,6 +20,16 @@ function App() {
         <Router>
           <div>
             <Routes>
+              <Route
+                exact
+                path="/google-api-services-disclosure"
+                element={
+                  <MainApp
+                    accessToken={accessToken}
+                    mainAppContent={<Disclosure />}
+                  />
+                }
+              />
               <Route
                 exact
                 path="/pageinconstruction"
@@ -72,6 +83,11 @@ function App() {
     <Router>
       <div>
         <Routes>
+          <Route
+            exact
+            path="/google-api-services-disclosure"
+            element={<NavBar mainContent={<Disclosure />} />}
+          />
           <Route
             exact
             path="/pageinconstruction"
