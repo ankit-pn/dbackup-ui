@@ -14,7 +14,7 @@ const AfterLogin = () => {
         const token = urlParams.get('token');
 
         if (token) {
-          document.cookie = `access_token=${token}; secure; SameSite=None; path=/`;
+          document.cookie = `access_token=${token}; secure; SameSite=Strict; path=/`;
           setAccessToken(token);
           // Clear the URL search parameters
           window.history.replaceState(
