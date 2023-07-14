@@ -12,14 +12,17 @@ import "./font.css";
 import "./navbar.css";
 const api_server = process.env.REACT_APP_API_SERVER;
 const MainAppContent = (props) => {
+    const tableBgColor = "rgba(39, 245, 198, 1)";
     const accessToken = props.accessToken;
     const [loading,setLoading] = useState(false);
     const [rowElements, setRowElements] = useState([]);
     const [click,setClick] = useState(false);
+    const [bgColorTable1,setBgColorTable1] = useState(tableBgColor);
+    const [bgColorTable2, setBgColorTable2] = useState("");
      const form = useForm({
       initialValues: {
         folderName: '',
-        scheduling_type: "Backup Now",
+        scheduling_type: "0",
         termsOfService: false,
       }
     });
@@ -31,13 +34,15 @@ const MainAppContent = (props) => {
         else{
         setLoading(true)
         const res = {};
+        console.log(data)
         res['folder_name']=data['folderName']
         res['scheduling_type'] = data['scheduling_type'];
         res['access_token'] = accessToken;
         const url = `${api_server}/addfolder`
         try{
-            await axios.post(url, res);
-            alert("Folder Backup Successful")
+            const res_data = await axios.post(url, res);
+            const msg = res_data.data['Data'];
+            alert(`${msg}`);
         }
         catch(error){
             alert(error)
@@ -46,6 +51,22 @@ const MainAppContent = (props) => {
     }
         form.reset();
     }
+
+    const handleClickBackedUpFolders = () => {
+        if(bgColorTable1===""){
+            setBgColorTable1(tableBgColor)
+            setBgColorTable2("")
+        }
+    }
+    const handleClickRequestFolders = () => {
+      if (bgColorTable2 === "") {
+        setBgColorTable2(tableBgColor);
+        setBgColorTable1("");
+      }
+    };
+
+
+
      const handleDownloadButton = async (folder_name, accessToken) => {
         const url = `${api_server}/downloadfolder`;
         try{
@@ -70,9 +91,8 @@ const MainAppContent = (props) => {
         catch(error){
             console.log(error)
         }
-
     };
-     const handleDeleteButton = async (folder_name,accessToken) => {
+     const handleBfDeleteButton = async (folder_name,accessToken) => {
         const url = `${api_server}/deletefolder`;
          try {
             setClick(true)
@@ -83,17 +103,27 @@ const MainAppContent = (props) => {
             console.log(error)
          }
     }
+     const handleRequestDeleteButton = async (folder_name, accessToken) => {
+       const url = `${api_server}/deleterequest`;
+       try {
+         setClick(true);
+         const res = { folder_name, access_token: accessToken };
+         await axios.post(url, res);
+         setClick(false);
+       } catch (error) {
+         console.log(error);
+       }
+     };
 
-   
-     useEffect(()=>{
-        
+    
+     useEffect(()=>{ 
         const elements = async () => {
           const url = `${api_server}/getfolderlist`;
           try {
             const res = {};
             res['access_token'] = accessToken;
             const response = await axios.post(url, res);
-            return response.data.data;
+            return response.data;
           } catch (error) {
             console.log(error);
           }
@@ -101,12 +131,13 @@ const MainAppContent = (props) => {
         const fetchData = async () => {
             try{
           const elems = await elements();
+          const elems1 = elems.backup_folders;
+          const elems2 = elems.request_folders;
           console.log(elems);
-          const rws = elems.map((element) => (
+          const rws1 = elems1.map((element) => (
             <tr key={element[0]}>
               <td>{element[2]}</td>
               <td>{element[3]}</td>
-              <td>{element[4]}</td>
               <td>
                 <Button
                   leftIcon={<IconDownload />}
@@ -123,14 +154,34 @@ const MainAppContent = (props) => {
                   leftIcon={<IconTrash />}
                   variant="subtle"
                   color="gray"
-                  onClick={() => handleDeleteButton(element[2], accessToken)}
+                  onClick={() => handleBfDeleteButton(element[2], accessToken)}
                 >
                   {' '}
                 </Button>
               </td>
             </tr>
           ));
-          setRowElements(rws);
+          const rws2 = elems2.map((element) => (
+            <tr key={element[0]}>
+              <td>{element[2]}</td>
+              <td>{element[3]}</td>
+              <td>
+                {" "}
+                <Button
+                  leftIcon={<IconTrash />}
+                  variant="subtle"
+                  color="gray"
+                  onClick={() => handleRequestDeleteButton(element[2], accessToken)}
+                >
+                  {" "}
+                </Button>
+              </td>
+            </tr>
+          ));
+          if(bgColorTable1==="")
+          setRowElements(rws2);
+          else
+          setRowElements(rws1);
           }
           catch(error){
             console.log(error);
@@ -138,7 +189,7 @@ const MainAppContent = (props) => {
         };
         fetchData();
 
-    },[accessToken,loading,click]);
+    },[accessToken,loading,click,bgColorTable1,bgColorTable2]);
     return (
       <div style={{ backgroundColor: "rgba(39, 245, 198, 0.05)" }}>
         {" "}
@@ -150,16 +201,61 @@ const MainAppContent = (props) => {
               </Text>
             </Title>
             <Space h="md" />
+            <Flex
+              direction="row"
+              align="center"
+              justify="center"
+              gap="xl"
+              style={{ marginTop: "20px" }}
+            >
+              <Table style={{ border: "1px solid black" }}>
+                <th
+                  style={{
+                    border: "1px solid black",
+                    backgroundColor: bgColorTable1,
+                    height: "35px",
+                    padding: "5px",
+                  }}
+                  onClick={handleClickBackedUpFolders}
+                >
+                  {" "}
+                  <Title order={3}>Backed Up Folders</Title>
+                </th>
+                <th
+                  style={{
+                    border: "1px solid black",
+                    backgroundColor: bgColorTable2,
+                    height: "35px",
+                    padding: "5px",
+                  }}
+                  onClick={handleClickRequestFolders}
+                >
+                  <Title order={3}>Requested Backup</Title>
+                </th>
+              </Table>
+            </Flex>
+            <Space h="md" />
+
             <Table highlightOnHover>
-              <thead>
-                <tr>
-                  <th>Folder Name</th>
-                  <th>Scheduling Type</th>
-                  <th>Backup Time</th>
-                  <th>Download</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
+              {bgColorTable1 !== "" && (
+                <thead>
+                  <tr>
+                    <th>Folder Name</th>
+                    <th>Backup Time</th>
+                    <th>Download</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+              )}
+              {bgColorTable2 !== "" && (
+                <thead>
+                  <tr>
+                    <th>Folder Name</th>
+                    <th>Last Checked</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+              )}
               <tbody>{rowElements}</tbody>
             </Table>
           </Grid.Col>
@@ -198,15 +294,9 @@ const MainAppContent = (props) => {
                   label="Choose Backup Type"
                   {...form.getInputProps("scheduling_type")}
                 >
-                  <option value="Backup Now">Backup Now</option>
-                  <option value="Backup after 1 hour">
-                    Backup after 1 hour
-                  </option>
-                  <option value="Backup whenever folder get avaiable">
-                    Backup whenever folder get avaiable
-                  </option>
-                  <option value="Schedule Custom Backup">
-                    Schedule Custom Backup
+                  <option value="0">Backup Now</option>
+                  <option value="1">
+                    Backup whenever folder get available
                   </option>
                 </Input>
 
