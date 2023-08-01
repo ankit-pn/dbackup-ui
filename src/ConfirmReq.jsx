@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import NotFound from "./NotFound";
+import RequestForAuth from "./RequestForAuth";
 const api_server = process.env.REACT_APP_API_SERVER;
 
 
@@ -47,14 +48,6 @@ const ConfirmAuth = () => {
      setTokenAsCookie();
    }, []);
 
-   if (loading) {
-     // Display a loading state until the token is set
-     return <div>Loading...</div>;
-   }
-   if (!accessToken) {
-     // If the token is not available, render the NotFound component
-     return <NotFound />;
-   } 
   const handleSubmit = async () => {
       setLoading(true);
       const res = {};
@@ -74,7 +67,10 @@ const ConfirmAuth = () => {
       }
       setLoading(false);
     }
-    
+    if(accessToken==="" || accessToken===undefined){
+        return <RequestForAuth></RequestForAuth>;
+    }
+  else{  
   return (
     <>
     <Box
@@ -168,5 +164,6 @@ const ConfirmAuth = () => {
    }
    </>
   )
-};
+}}
+;
 export default ConfirmAuth;

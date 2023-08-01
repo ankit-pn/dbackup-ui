@@ -12,29 +12,7 @@ import MainApp from './MainApp';
 import PageInConstruction from './PageInConstruction';
 import Disclosure from './Disclosure';
 import ConfirmAuth from './ConfirmReq';
-import { useEffect } from 'react';
 function App() {
-   useEffect(() => {
-     // Function to extract the token from the query parameter and set it as a cookie
-     const setTokenAsCookie = () => {
-       // Get the token from the query parameter
-       const urlParams = new URLSearchParams(window.location.search);
-       const token = urlParams.get("token");
-
-       if (token) {
-         document.cookie = `access_token=${token}; secure; SameSite=Strict; path=/`;
-         // Clear the URL search parameters
-         window.history.replaceState(
-           {},
-           document.title,
-           window.location.pathname
-         );
-       }
-     };
-
-     // Call the function to set the token as a cookie when the component mounts
-     setTokenAsCookie();
-   }, []);
   if(Cookies.get('access_token')!==undefined){
     const accessToken = Cookies.get('access_token')
     console.log("Here",accessToken);
@@ -118,7 +96,7 @@ function App() {
           <Route
             exact
             path="/datareq"
-            element={<NavBar mainContent={<RequestForAuth />}></NavBar>}
+            element={<NavBar mainContent={<ConfirmAuth />}></NavBar>}
           />
           <Route
             exact
