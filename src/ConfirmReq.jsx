@@ -1,19 +1,43 @@
-import { Grid, Button, Text, Flex, Title, Divider } from '@mantine/core';
-import iim from './logo/png/logo-no-background.png';
-import {Checkbox, Box } from '@mantine/core';
+import { Grid, Button, Text, Flex, Title, Divider,Overlay,Loader,Space } from "@mantine/core";
+import iim from "./logo/png/logo-no-background.png";
+import { Checkbox, Box } from "@mantine/core";
+import axios from "axios";
+import { useEffect, useState } from "react";
 const api_server = process.env.REACT_APP_API_SERVER;
-const RequestForAuth = () => {
+
+
+
+const ConfirmAuth = (props) => {
+  const [loading, setLoading] = useState(false);
   const data = {
-    folder_name: 'Takeout',
-    requester: 'Data4Research',
-    scheduling_type: 'Backup whenever folder get available',
-    requester_uri: 'https://data-donation.vercel.app'
+    folder_name: "Takeout",
+    requester: "Data4Research",
+    scheduling_type: "Backup whenever folder get available",
+    requester_uri: "https://data-donation.vercel.app",
   };
-  const handleSubmit = () =>{
-     window.location.href = `${api_server}/connect?auth-request=datareq`;
-  }
+  const accessToken=props.accessToken
+  const handleSubmit = async () => {
+      setLoading(true);
+      const res = {};
+      console.log(data);
+      res["folder_name"] = "Takeout";
+      res["scheduling_type"] = "1";
+      res["access_token"] = accessToken;
+      console.log(res)
+      const url = `${api_server}/addfolder`;
+      try {
+        const res_data = await axios.post(url, res);
+        const msg = res_data.data["Data"];
+        alert(`${msg}`);
+        window.location.href = "https://data-donation.vercel.app";
+      } catch (error) {
+        alert(error);
+      }
+      setLoading(false);
+    }
 
   return (
+    <>
     <Box
       maw={400}
       mx="auto"
@@ -80,11 +104,30 @@ const RequestForAuth = () => {
         <Divider my="sm" />
         <Grid>
           <Grid.Col span="auto">
-            <Button onClick={handleSubmit}>Authorize</Button>
+            <Button onClick={handleSubmit}>Confirm Schedule and Transfer</Button>
           </Grid.Col>
         </Grid>
       </Flex>
     </Box>
-  );
+   {loading && (
+       <Overlay zIndex={1000} opacity={0.75} color="#fff">
+         <div
+           style={{
+             display: "flex",
+             flexDirection: "column",
+             justifyContent: "center",
+             alignItems: "center",
+             height: "100%",
+           }}
+         >
+           <Loader size="md" />
+           <Space h="md" />
+           <Title order={3}> Backuping folder Now</Title>
+         </div>
+       </Overlay>
+     )
+   }
+   </>
+  )
 };
-export default RequestForAuth;
+export default ConfirmAuth;

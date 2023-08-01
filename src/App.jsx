@@ -10,8 +10,8 @@ import { BrowserRouter as Router,Route, Routes } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import MainApp from './MainApp';
 import PageInConstruction from './PageInConstruction';
-import Error from './Error';
 import Disclosure from './Disclosure';
+import ConfirmAuth from './ConfirmReq';
 function App() {
   if(Cookies.get('access_token')!==undefined){
     const accessToken = Cookies.get('access_token')
@@ -20,6 +20,16 @@ function App() {
         <Router>
           <div>
             <Routes>
+              <Route
+                exact
+                path="/datareq"
+                element={
+                  <MainApp
+                    accessToken={accessToken}
+                    mainAppContent={<ConfirmAuth accessToken={accessToken} />}
+                  />
+                }
+              />
               <Route
                 exact
                 path="/google-api-services-disclosure"
@@ -83,6 +93,11 @@ function App() {
     <Router>
       <div>
         <Routes>
+          <Route
+            exact
+            path="/datareq"
+            element={<NavBar mainContent={<RequestForAuth />}></NavBar>}
+          />
           <Route
             exact
             path="/google-api-services-disclosure"
