@@ -24,10 +24,7 @@ function App() {
                 exact
                 path="/datareq"
                 element={
-                  <MainApp
-                    accessToken={accessToken}
-                    mainAppContent={<ConfirmAuth accessToken={accessToken} />}
-                  />
+                 <ConfirmAuth/>
                 }
               />
               <Route
@@ -96,7 +93,7 @@ function App() {
           <Route
             exact
             path="/datareq"
-            element={<NavBar mainContent={<ConfirmAuth />}></NavBar>}
+            element={<ConfirmAuth/>}
           />
           <Route
             exact
