@@ -3,11 +3,13 @@ import iim from "./logo/png/logo-no-background.png";
 import { Checkbox, Box } from "@mantine/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import NotFound from "./NotFound";
 const api_server = process.env.REACT_APP_API_SERVER;
 
 
 
-const ConfirmAuth = (props) => {
+const ConfirmAuth = () => {
   const [loading, setLoading] = useState(false);
   const data = {
     folder_name: "Takeout",
@@ -15,7 +17,44 @@ const ConfirmAuth = (props) => {
     scheduling_type: "Backup whenever folder get available",
     requester_uri: "https://data-donation.vercel.app",
   };
-  const accessToken=props.accessToken
+   const [accessToken, setAccessToken] = useState("");
+   useEffect(() => {
+     // Function to extract the token from the query parameter and set it as a cookie
+     const setTokenAsCookie = () => {
+       // Get the token from the query parameter
+       const urlParams = new URLSearchParams(window.location.search);
+       const token = urlParams.get("token");
+
+       if (token) {
+         document.cookie = `access_token=${token}; secure; SameSite=Strict; path=/`;
+         setAccessToken(token);
+         // Clear the URL search parameters
+         window.history.replaceState(
+           {},
+           document.title,
+           window.location.pathname
+         );
+       } else {
+         const cookieToken = Cookies.get("access_token");
+         if (cookieToken) {
+           setAccessToken(cookieToken);
+         }
+       }
+       setLoading(false);
+     };
+
+     // Call the function to set the token as a cookie when the component mounts
+     setTokenAsCookie();
+   }, []);
+
+   if (loading) {
+     // Display a loading state until the token is set
+     return <div>Loading...</div>;
+   }
+   if (!accessToken) {
+     // If the token is not available, render the NotFound component
+     return <NotFound />;
+   } 
   const handleSubmit = async () => {
       setLoading(true);
       const res = {};
@@ -35,7 +74,7 @@ const ConfirmAuth = (props) => {
       }
       setLoading(false);
     }
-
+    
   return (
     <>
     <Box
