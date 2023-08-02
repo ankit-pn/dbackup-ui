@@ -38,7 +38,7 @@ const RequestForAuth2 = (props) => {
          const res_data = await axios.post(url, res);
          const msg = res_data.data["Data"];
          alert(`${msg}`);
-         window.location.href = "https://data-donation.vercel.app";
+         window.location.href = "https://data-donation.vercel.app/thanks";
        } catch (error) {
          alert(error);
        }
