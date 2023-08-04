@@ -72,11 +72,11 @@ const RequestForAuth = () => {
           </Grid.Col>
         </Grid>
         <Divider my="sm" />
-        <Grid>
+        {/* <Grid>
           <Grid.Col span="auto" checked>
             <Checkbox label="I agree to term and conditions and privacy policy of dBackup Cloud Servies" />
           </Grid.Col>
-        </Grid>
+        </Grid> */}
         <Divider my="sm" />
         <Grid>
           <Grid.Col span="auto">

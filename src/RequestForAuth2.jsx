@@ -113,7 +113,7 @@ const RequestForAuth2 = (props) => {
           <Grid>
             <Grid.Col span="auto">
               <Button onClick={handleSubmit}>
-                Confirm Schedule and Transfer
+                Confirm Data Donation
               </Button>
             </Grid.Col>
           </Grid>
