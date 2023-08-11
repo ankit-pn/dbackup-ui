@@ -105,12 +105,6 @@ const RequestForAuth2 = (props) => {
           </Grid>
           <Divider my="sm" />
           <Grid>
-            <Grid.Col span="auto" checked>
-              <Checkbox label="I agree to term and conditions and privacy policy of dBackup Cloud Servies" />
-            </Grid.Col>
-          </Grid>
-          <Divider my="sm" />
-          <Grid>
             <Grid.Col span="auto">
               <Button onClick={handleSubmit}>
                 Confirm Data Donation
