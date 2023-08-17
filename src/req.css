@@ -1,0 +1,30 @@
+/* styles.css */
+
+/* Default styles for larger screens */
+.box {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Responsive styles for smaller screens (mobile devices) */
+@media (max-width: 768px) {
+  .box {
+    max-width: 98%;
+    padding: 10px;
+    background-color: #ffffff;
+  }
+   .box h4 {
+    font-size: 15px;
+    align-self: flex-start;
+  }
+  
+  /* Make icons smaller */
+  .box img {
+    max-width: 130px;
+  }
+}

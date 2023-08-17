@@ -7,3 +7,41 @@
 }
 
 
+/* Add a media query for smaller screen sizes (mobile devices) */
+@media (max-width: 768px) {
+    .navbar-button {
+        margin-left: 10px; /* Adjust the margin for smaller screens */
+    }
+
+    .navbar-grid {
+        justify-content: center; /* Center align the grid items */
+    }
+
+    .navbar-button-1 {
+        margin: 5px 2px; /* Adjust margins for smaller screens */
+    }
+
+    .navbar-button,
+    .navbar-button-1 {
+        margin-left: 0; /* Reset the margin for smaller screens */
+    }
+
+    .navbar-button,
+    .navbar-button-1,
+    .navbar-button-2,
+    .navbar-button-3 {
+        margin: 5px 0; /* Add spacing between buttons */
+    }
+
+    .navbar-button,
+    .navbar-button-1,
+    .navbar-button-2,
+    .navbar-button-3,
+    .navbar-button-4,
+    .navbar-button-5 {
+        width: 100%; /* Make buttons full width on smaller screens */
+        text-align: center; /* Center align the button text */
+    }
+}
+
+
