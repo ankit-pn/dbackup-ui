@@ -1,5 +1,6 @@
 import NotFound from './NotFound'
 import MainApp from './MainApp'
+import MainAppTest from './MainAppTest';
 import Cookies from 'js-cookie';
 import MainAppContent from './MainAppContent';
 import { useEffect,useState } from 'react';
@@ -43,6 +44,6 @@ const AfterLogin = () => {
       // If the token is not available, render the NotFound component
       return <NotFound />;
     } 
-    return <MainApp accessToken={accessToken} mainAppContent={<MainAppContent accessToken={accessToken}/>}/>
+    return <MainAppTest accessToken={accessToken} mainAppContent={<MainAppContent accessToken={accessToken}/>}/>
 };
 export default AfterLogin;

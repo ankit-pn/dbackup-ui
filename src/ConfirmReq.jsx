@@ -4,7 +4,10 @@ import RequestForAuth2 from "./RequestForAuth2";
 import RequestForAuth from "./RequestForAuth";
 import NavBar from "./NavBar";
 import MainApp from "./MainApp";
-
+import NavBarTest from "./NavBarTest";
+import "./font.css";
+import "./navbar.css";
+import MainAppTest from "./MainAppTest";
 
 
 const ConfirmAuth = () => {
@@ -38,11 +41,11 @@ const [accessToken, setAccessToken] = useState("");
 
  
     if(accessToken==="" || accessToken===undefined){   
-        return <NavBar mainContent={<RequestForAuth />}></NavBar>;
+        return <NavBarTest mainContent={<RequestForAuth />}/>;
     }
     else{  
          return (
-           <MainApp
+           <MainAppTest
              accessToken={accessToken}
              mainAppContent={<RequestForAuth2 accessToken={accessToken} />}
            />

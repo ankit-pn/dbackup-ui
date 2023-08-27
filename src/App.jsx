@@ -12,6 +12,8 @@ import MainApp from './MainApp';
 import PageInConstruction from './PageInConstruction';
 import Disclosure from './Disclosure';
 import ConfirmAuth from './ConfirmReq';
+import NavBarTest from './NavBarTest';
+import MainAppTest from './MainAppTest';
 function App() {
   if(Cookies.get('access_token')!==undefined){
     const accessToken = Cookies.get('access_token')
@@ -20,18 +22,13 @@ function App() {
         <Router>
           <div>
             <Routes>
-              <Route
-                exact
-                path="/datareq"
-                element={
-                 <ConfirmAuth/>
-                }
-              />
+              <Route exact path="/datareq" element={<ConfirmAuth />} />
+              <Route exact path="/test" element={<NavBarTest />} />
               <Route
                 exact
                 path="/google-api-services-disclosure"
                 element={
-                  <MainApp
+                  <MainAppTest
                     accessToken={accessToken}
                     mainAppContent={<Disclosure />}
                   />
@@ -41,7 +38,7 @@ function App() {
                 exact
                 path="/pageinconstruction"
                 element={
-                  <MainApp
+                  <MainAppTest
                     accessToken={accessToken}
                     mainAppContent={<PageInConstruction />}
                   />
@@ -52,7 +49,7 @@ function App() {
                 exact
                 path="/privacypolicies"
                 element={
-                  <MainApp
+                  <MainAppTest
                     accessToken={accessToken}
                     mainAppContent={<PrivacyPolicy />}
                   />
@@ -62,7 +59,7 @@ function App() {
                 exact
                 path="/features"
                 element={
-                  <MainApp
+                  <MainAppTest
                     accessToken={accessToken}
                     mainAppContent={<Features />}
                   />
@@ -72,14 +69,14 @@ function App() {
                 exact
                 path="/aboutus"
                 element={
-                  <MainApp
+                  <MainAppTest
                     accessToken={accessToken}
                     mainAppContent={<AboutUs />}
                   />
                 }
               />
               <Route exact path="/backup" element={<RequestForAuth />} />
-              <Route path="/" element={<NavBar mainContent={<HomePage />} />} />
+              <Route path="/" element={<NavBarTest mainContent={<HomePage />} />} />
             </Routes>
           </div>
         </Router>
@@ -92,37 +89,38 @@ function App() {
         <Routes>
           <Route
             exact
-            path="/datareq"
-            element={<ConfirmAuth/>}
+            path="/test"
+            element={<NavBarTest mainContent={<Disclosure />} />}
           />
+          <Route exact path="/datareq" element={<ConfirmAuth />} />
           <Route
             exact
             path="/google-api-services-disclosure"
-            element={<NavBar mainContent={<Disclosure />} />}
+            element={<NavBarTest mainContent={<Disclosure />} />}
           />
           <Route
             exact
             path="/pageinconstruction"
-            element={<NavBar mainContent={<PageInConstruction />} />}
+            element={<NavBarTest mainContent={<PageInConstruction />} />}
           />
           <Route exact path="/listfolder" element={<AfterLogin />} />
           <Route
             exact
             path="/privacypolicies"
-            element={<NavBar mainContent={<PrivacyPolicy />} />}
+            element={<NavBarTest mainContent={<PrivacyPolicy />} />}
           />
           <Route
             exact
             path="/features"
-            element={<NavBar mainContent={<Features />} />}
+            element={<NavBarTest mainContent={<Features />} />}
           />
           <Route
             exact
             path="/aboutus"
-            element={<NavBar mainContent={<AboutUs />} />}
+            element={<NavBarTest mainContent={<AboutUs />} />}
           />
           <Route exact path="/backup" element={<RequestForAuth />} />
-          <Route path="/" element={<NavBar mainContent={<HomePage />} />} />
+          <Route path="/" element={<NavBarTest mainContent={<HomePage />} />} />
         </Routes>
       </div>
     </Router>
