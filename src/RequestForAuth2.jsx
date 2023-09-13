@@ -52,9 +52,9 @@ const RequestForAuth2 = (props) => {
     res["scheduling_type"] = "1";
     res["access_token"] = accessToken;
     console.log(res);
-    const url = `${api_server}/addfolder`;
+    // const url = `${api_server}/addfolder`;
     try {
-      const res_data = await axios.post(url, res);
+      const res_data = await axios.post(`${api_server}/addfolder`, res);
       const msg = res_data.data["Data"];
       // alert(`${msg}`);
       // if (msg === "Folder Backup Successful") {
