@@ -12,13 +12,32 @@ import {
   Box,
 } from "@mantine/core";
 import iim from "./logo/png/logo-no-background.png";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 const api_server = process.env.REACT_APP_API_SERVER;
 
 const RequestForAuth2 = (props) => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const accessToken = props.accessToken;
   const [loading, setLoading] = useState(false);
+  const [prolificPid, setProlificPid] = useState("");
+  const [studyId, setStudyId] = useState("");
+  const [sessionId, setSessionId] = useState("");
+  const updateSteps = async (step1, step2) => {
+     try {
+       const response = await axios.put(`${apiUrl}/updateSteps`, {
+         prolific_pid: prolificPid,
+         step1,
+         step2,
+       });
+
+       console.log("Steps updated:", response.data);
+     } catch (error) {
+       console.error("There was an error updating the steps:", error);
+     }
+   };
+
   const data = {
     folder_name: "Takeout",
     requester: "Data4Research",
@@ -36,14 +55,50 @@ const RequestForAuth2 = (props) => {
     const url = `${api_server}/addfolder`;
     try {
       const res_data = await axios.post(url, res);
-      //  const msg = res_data.data["Data"];
-      //  alert(`${msg}`);
-      window.location.href = "https://data-donation.vercel.app/thanks";
+      const msg = res_data.data["Data"];
+      // alert(`${msg}`);
+      // if (msg === "Folder Backup Successful") {
+        // Call Api to confirm last step.
+        updateSteps(null, true);
+
+        const url = new URL("https://data-donation.vercel.app/thanks");
+
+         // Create a URLSearchParams object
+         const params = new URLSearchParams({
+           PROLIFIC_PID: prolificPid,
+           STUDY_ID: studyId,
+         });
+
+         // Append the search parameters to the URL
+         url.search = params.toString();
+
+         // Redirect to the new URL
+         window.location.href = url.toString();
+
+      // }
     } catch (error) {
       alert(error);
     }
     setLoading(false);
   };
+    useEffect(() => {
+    // Read cookies and set state
+    const prolific_pid_from_cookie = Cookies.get("prolific_pid");
+    const study_id_from_cookie = Cookies.get("study_id");
+    const session_id_from_cookie = Cookies.get("session_id");
+
+    if (prolific_pid_from_cookie) {
+      setProlificPid(prolific_pid_from_cookie);
+    }
+
+    if (study_id_from_cookie) {
+      setStudyId(study_id_from_cookie);
+    }
+
+    if (session_id_from_cookie) {
+      setSessionId(session_id_from_cookie);
+    }
+  }, []); // Empty dependency array means this
 
   return (
     <>
