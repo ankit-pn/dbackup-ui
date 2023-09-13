@@ -59,7 +59,7 @@ const RequestForAuth2 = (props) => {
       // alert(`${msg}`);
       // if (msg === "Folder Backup Successful") {
         // Call Api to confirm last step.
-        updateSteps(null, true);
+        await updateSteps(null, true);
 
         const url = new URL("https://data-donation.vercel.app/thanks");
 
@@ -73,7 +73,7 @@ const RequestForAuth2 = (props) => {
          url.search = params.toString();
 
          // Redirect to the new URL
-         window.location.href = url.toString();
+        //  window.location.href = url.toString();
 
       // }
     } catch (error) {
