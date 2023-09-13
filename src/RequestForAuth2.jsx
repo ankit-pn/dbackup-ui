@@ -24,11 +24,10 @@ const RequestForAuth2 = (props) => {
   const [prolificPid, setProlificPid] = useState("");
   const [studyId, setStudyId] = useState("");
   const [sessionId, setSessionId] = useState("");
-  const updateSteps = async (step1, step2) => {
+  const updateSteps = async (step2) => {
      try {
        const response = await axios.put(`${apiUrl}/updateSteps`, {
          prolific_pid: prolificPid,
-         step1,
          step2,
        });
 
@@ -59,7 +58,7 @@ const RequestForAuth2 = (props) => {
        alert(`${msg}`);
       // if (msg === "Folder Backup Successful") {
         // Call Api to confirm last step.
-        await updateSteps(null, true);
+        await updateSteps(true);
 
         // const url = new URL("https://data-donation.vercel.app/thanks");
 
