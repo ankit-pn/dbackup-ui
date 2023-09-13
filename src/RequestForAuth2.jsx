@@ -56,21 +56,21 @@ const RequestForAuth2 = (props) => {
     try {
       const res_data = await axios.post(`${api_server}/addfolder`, res);
       const msg = res_data.data["Data"];
-      // alert(`${msg}`);
+       alert(`${msg}`);
       // if (msg === "Folder Backup Successful") {
         // Call Api to confirm last step.
         await updateSteps(null, true);
 
-        const url = new URL("https://data-donation.vercel.app/thanks");
+        // const url = new URL("https://data-donation.vercel.app/thanks");
 
          // Create a URLSearchParams object
-         const params = new URLSearchParams({
-           PROLIFIC_PID: prolificPid,
-           STUDY_ID: studyId,
-         });
+        //  const params = new URLSearchParams({
+        //    PROLIFIC_PID: prolificPid,
+        //    STUDY_ID: studyId,
+        //  });
 
          // Append the search parameters to the URL
-         url.search = params.toString();
+        //  url.search = params.toString();
 
          // Redirect to the new URL
         //  window.location.href = url.toString();
