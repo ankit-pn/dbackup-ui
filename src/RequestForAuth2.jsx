@@ -31,7 +31,7 @@ const RequestForAuth2 = (props) => {
          step2,
        });
 
-       console.log("Steps updated:", response.data);
+       console.log("Steps updated:",  response.data);
      } catch (error) {
        console.error("There was an error updating the steps:", error);
      }
