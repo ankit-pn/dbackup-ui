@@ -17,8 +17,9 @@ const AfterLogin = () => {
         if (token) {
           const date = new Date();
           date.setTime(date.getTime() + 30 * 60 * 1000); // 30 minutes
-          const expires = `; expires=${date.toUTCString()}`;
-          document.cookie = `access_token=${token};${expires}; secure; SameSite=Strict; path=/`;
+          const expires = `expires=${date.toGMTString()}`;
+          document.cookie = `access_token=${token}; ${expires}; secure; SameSite=Strict; path=/`;
+
           setAccessToken(token);
           // Clear the URL search parameters
           window.history.replaceState(
