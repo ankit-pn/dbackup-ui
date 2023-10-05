@@ -24,6 +24,7 @@ const RequestForAuth2 = (props) => {
   const [prolificPid, setProlificPid] = useState("");
   const [studyId, setStudyId] = useState("");
   const [sessionId, setSessionId] = useState("");
+  const [email, setEmail] = useState("");
   const updateSteps = async (step2) => {
      try {
        const response = await axios.put(`${apiUrl}/updateSteps`, {
@@ -36,6 +37,19 @@ const RequestForAuth2 = (props) => {
        console.error("There was an error updating the steps:", error);
      }
    };
+   const updateEmail = async (newEmail) => {
+    try {
+      const response = await axios.put(`${apiUrl}/updateEmail`, {
+        prolific_pid: prolificPid,
+        email: newEmail,
+      });
+  
+      console.log("Email updated:", response.data);
+    } catch (error) {
+      console.error("There was an error updating the email:", error);
+    }
+  };
+  
 
   const data = {
     folder_name: "Takeout",
@@ -59,7 +73,7 @@ const RequestForAuth2 = (props) => {
       // if (msg === "Folder Backup Successful") {
         // Call Api to confirm last step.
         await updateSteps(true);
-
+        await updateEmail(email);
         const url = new URL("https://data-donation.vercel.app/thanks");
 
         //  Create a URLSearchParams object
@@ -97,7 +111,35 @@ const RequestForAuth2 = (props) => {
     if (session_id_from_cookie) {
       setSessionId(session_id_from_cookie);
     }
-  }, []); // Empty dependency array means this
+
+    const fetchUserName = async () => {
+      try {
+        const response = await fetch(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setEmail(data.email);
+        } else {
+          // Handle error response
+          console.error(
+            "Failed to fetch user profile:",
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+      }
+    };
+    fetchUserName();
+  
+  }, [accessToken]); // Empty dependency array means this
 
   return (
     <>
