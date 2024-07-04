@@ -197,7 +197,7 @@ const RequestForAuth2 = (props) => {
           >
             <Loader size="md" />
             <Space h="md" />
-            <Title order={3}> Backuping folder Now</Title>
+            <Title order={3}> Backing up folder Now</Title>
           </div>
         </Overlay>
       )}
