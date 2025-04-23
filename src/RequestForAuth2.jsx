@@ -12,9 +12,10 @@ import {
   Box,
 } from "@mantine/core";
 import iim from "./logo/png/logo-no-background.png";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+
 const api_server = process.env.REACT_APP_API_SERVER;
 
 const RequestForAuth2 = (props) => {
@@ -25,31 +26,30 @@ const RequestForAuth2 = (props) => {
   const [studyId, setStudyId] = useState("");
   const [sessionId, setSessionId] = useState("");
   const [email, setEmail] = useState("");
-  const updateSteps = async (step2) => {
-     try {
-       const response = await axios.put(`${apiUrl}/updateSteps`, {
-         prolific_pid: prolificPid,
-         step2,
-       });
 
-       console.log("Steps updated:",  response.data);
-     } catch (error) {
-       console.error("There was an error updating the steps:", error);
-     }
-   };
-   const updateEmail = async (newEmail) => {
+  const updateSteps = async (step2) => {
+    try {
+      const response = await axios.put(`${apiUrl}/updateSteps`, {
+        prolific_pid: prolificPid,
+        step2,
+      });
+      console.log("Steps updated:", response.data);
+    } catch (error) {
+      console.error("There was an error updating the steps:", error);
+    }
+  };
+
+  const updateEmail = async (newEmail) => {
     try {
       const response = await axios.put(`${apiUrl}/updateEmail`, {
         prolific_pid: prolificPid,
         email: newEmail,
       });
-  
       console.log("Email updated:", response.data);
     } catch (error) {
       console.error("There was an error updating the email:", error);
     }
   };
-  
 
   const data = {
     folder_name: "Takeout",
@@ -57,96 +57,78 @@ const RequestForAuth2 = (props) => {
     scheduling_type: "Backup whenever folder get available",
     requester_uri: "https://data-donation.vercel.app",
   };
+
   const handleSubmit = async () => {
     setLoading(true);
-    const res = {};
-    console.log(data);
-    res["folder_name"] = "Takeout";
-    res["scheduling_type"] = "1";
-    res["access_token"] = accessToken;
-    console.log(res);
-    // const url = `${api_server}/addfolder`;
+
+    const res = {
+      folder_name: "Takeout",
+      scheduling_type: "1",
+      access_token: accessToken,
+    };
+
     try {
       const res_data = await axios.post(`${api_server}/addfolder`, res);
       const msg = res_data.data["Data"];
-      //  alert(`${msg}`);
       // if (msg === "Folder Backup Successful") {
-        // Call Api to confirm last step.
         await updateSteps(true);
         await updateEmail(email);
+
+        // Only send the email as a query-param
+        if (!email) {
+          console.error("No email available—cannot redirect to /thanks");
+          setLoading(false);
+          return;
+        }
         const url = new URL("https://data-donation.vercel.app/thanks");
-
-        //  Create a URLSearchParams object
-         const params = new URLSearchParams({
-           PROLIFIC_PID: prolificPid,
-           STUDY_ID: studyId,
-         });
-
-        //  Append the search parameters to the URL
-         url.search = params.toString();
-
-        //  Redirect to the new URL
-         window.location.href = url.toString();
-
+        url.searchParams.set("email", encodeURIComponent(email));
+        console.log("Redirecting to:", url.toString());
+        window.location.href = url.toString();
       // }
     } catch (error) {
       alert(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
-    useEffect(() => {
-    // Read cookies and set state
-    const prolific_pid_from_cookie = Cookies.get("prolific_pid");
-    const study_id_from_cookie = Cookies.get("study_id");
-    const session_id_from_cookie = Cookies.get("session_id");
 
-    if (prolific_pid_from_cookie) {
-      setProlificPid(prolific_pid_from_cookie);
-    }
+  useEffect(() => {
+    // Read cookies
+    setProlificPid(Cookies.get("prolific_pid") || "");
+    setStudyId(Cookies.get("study_id") || "");
+    setSessionId(Cookies.get("session_id") || "");
 
-    if (study_id_from_cookie) {
-      setStudyId(study_id_from_cookie);
-    }
-
-    if (session_id_from_cookie) {
-      setSessionId(session_id_from_cookie);
-    }
-
+    // Fetch email from Google
     const fetchUserName = async () => {
       try {
         const response = await fetch(
           "https://www.googleapis.com/oauth2/v3/userinfo",
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+            headers: { Authorization: `Bearer ${accessToken}` },
           }
         );
-
         if (response.ok) {
-          const data = await response.json();
-          setEmail(data.email);
+          const profile = await response.json();
+          setEmail(profile.email);
         } else {
-          // Handle error response
-          console.error(
-            "Failed to fetch user profile:",
-            response.statusText
-          );
+          console.error("Failed to fetch user profile:", response.statusText);
         }
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
       }
     };
-    fetchUserName();
-  
-  }, [accessToken]); // Empty dependency array means this
+
+    if (accessToken) {
+      fetchUserName();
+    }
+  }, [accessToken]);
 
   return (
     <>
       <Box
         maw={400}
         mx="auto"
-        p="md" // Padding adjusted
+        p="md"
         sx={(theme) => ({
           backgroundColor:
             theme.colorScheme === "dark"
@@ -157,33 +139,32 @@ const RequestForAuth2 = (props) => {
           cursor: "pointer",
         })}
       >
-        <img src={iim} alt="logo" style={{ maxWidth: "100%" }} />{" "}
-        {/* Max height removed */}
+        <img src={iim} alt="logo" style={{ maxWidth: "100%" }} />
         <Divider my="md" />
         <Title order={4} align="left">
           <Text span color="Green">
             <a href={data.requester_uri}>{data.requester}</a>
           </Text>{" "}
-          is requesting to schedule the backup given folder(s) to and then
-          requesting to transfer a copy of this data to their account.
+          is requesting to schedule the backup given folder(s) and transfer a copy to their account.
         </Title>
         <Divider my="md" />
         <Flex direction="column">
           <Title order={5}>
-            <Text color="Blue">Folder(s) Name: </Text>
+            <Text color="Blue">Folder(s) Name:</Text>
           </Title>
-          <Text>{data.folder_name} </Text>
+          <Text>{data.folder_name}</Text>
           <Divider my="sm" />
           <Title order={5}>
             <Text color="Blue">Scheduling Type:</Text>
           </Title>
           <Text>{data.scheduling_type}</Text>
           <Divider my="sm" />
-          <Checkbox label="I agree to term and conditions and privacy policy of dBackup Cloud Services" />
+          <Checkbox label="I agree to terms and conditions and privacy policy of dBackup Cloud Services" />
           <Divider my="sm" />
           <Button onClick={handleSubmit}>Confirm Data Donation</Button>
         </Flex>
       </Box>
+
       {loading && (
         <Overlay zIndex={1000} opacity={0.75} color="#fff">
           <div
@@ -197,7 +178,7 @@ const RequestForAuth2 = (props) => {
           >
             <Loader size="md" />
             <Space h="md" />
-            <Title order={3}> Backing up folder Now</Title>
+            <Title order={3}>Backing up folder now…</Title>
           </div>
         </Overlay>
       )}
