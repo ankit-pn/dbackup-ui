@@ -92,13 +92,44 @@ const RequestForAuth2 = (props) => {
     }
   };
 
+  // useEffect(() => {
+  //   // Read cookies
+  //   setProlificPid(Cookies.get("prolific_pid") || "");
+  //   setStudyId(Cookies.get("study_id") || "");
+  //   setSessionId(Cookies.get("session_id") || "");
+
+  //   // Fetch email from Google
+  //   const fetchUserName = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://www.googleapis.com/oauth2/v3/userinfo",
+  //         {
+  //           headers: { Authorization: `Bearer ${accessToken}` },
+  //         }
+  //       );
+  //       if (response.ok) {
+  //         const profile = await response.json();
+  //         setEmail(profile.email);
+  //       } else {
+  //         console.error("Failed to fetch user profile:", response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch user profile:", error);
+  //     }
+  //   };
+
+  //   if (accessToken) {
+  //     fetchUserName();
+  //   }
+  // }, [accessToken]);
+
   useEffect(() => {
     // Read cookies
     setProlificPid(Cookies.get("prolific_pid") || "");
     setStudyId(Cookies.get("study_id") || "");
     setSessionId(Cookies.get("session_id") || "");
-
-    // Fetch email from Google
+  
+    // Fetch email from Google and validate token
     const fetchUserName = async () => {
       try {
         const response = await fetch(
@@ -111,18 +142,38 @@ const RequestForAuth2 = (props) => {
           const profile = await response.json();
           setEmail(profile.email);
         } else {
-          console.error("Failed to fetch user profile:", response.statusText);
+          console.error("Access token invalid, clearing cookies and redirecting.");
+          // If token is invalid
+          Cookies.remove("access_token");
+          Cookies.remove("prolific_pid");
+          Cookies.remove("study_id");
+          Cookies.remove("session_id");
+          window.location.href = "/";
         }
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
+        // If fetch fails, treat as invalid token
+        Cookies.remove("access_token");
+        Cookies.remove("prolific_pid");
+        Cookies.remove("study_id");
+        Cookies.remove("session_id");
+        window.location.href = "/";
       }
     };
-
+  
     if (accessToken) {
       fetchUserName();
+    } else {
+      // No access token available, force logout
+      Cookies.remove("access_token");
+      Cookies.remove("prolific_pid");
+      Cookies.remove("study_id");
+      Cookies.remove("session_id");
+      window.location.href = "/";
     }
   }, [accessToken]);
 
+  
   return (
     <>
       <Box
