@@ -26,6 +26,7 @@ const RequestForAuth2 = (props) => {
   const [studyId, setStudyId] = useState("");
   const [sessionId, setSessionId] = useState("");
   const [email, setEmail] = useState("");
+  const [isEmailLoaded, setIsEmailLoaded] = useState(false);
 
   const updateSteps = async (step2) => {
     try {
@@ -74,14 +75,14 @@ const RequestForAuth2 = (props) => {
         await updateSteps(true);
         await updateEmail(email);
 
-        // Only send the email as a query-param
-        if (!email) {
-          console.error("No email available—cannot redirect to /thanks");
-          setLoading(false);
-          return;
-        }
+        // Redirect with email and prolific_pid as query params
         const url = new URL("https://data-donation-2.vercel.app/thanks");
-        url.searchParams.set("email", encodeURIComponent(email));
+        if (email) {
+          url.searchParams.set("email", encodeURIComponent(email));
+        }
+        if (prolificPid) {
+          url.searchParams.set("PROLIFIC_PID", prolificPid);
+        }
         console.log("Redirecting to:", url.toString());
         window.location.href = url.toString();
       // }
@@ -141,6 +142,7 @@ const RequestForAuth2 = (props) => {
         if (response.ok) {
           const profile = await response.json();
           setEmail(profile.email);
+          setIsEmailLoaded(true);
         } else {
           console.error("Access token invalid, clearing cookies and redirecting.");
           // If token is invalid
@@ -212,7 +214,9 @@ const RequestForAuth2 = (props) => {
           <Divider my="sm" />
           <Checkbox label="I agree to terms and conditions and privacy policy of dBackup Cloud Services" />
           <Divider my="sm" />
-          <Button onClick={handleSubmit}>Confirm Data Donation</Button>
+          <Button onClick={handleSubmit} disabled={!isEmailLoaded}>
+            {isEmailLoaded ? "Confirm Data Donation" : "Loading..."}
+          </Button>
         </Flex>
       </Box>
 
