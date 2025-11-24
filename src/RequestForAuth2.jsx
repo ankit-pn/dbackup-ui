@@ -80,7 +80,7 @@ const RequestForAuth2 = (props) => {
           setLoading(false);
           return;
         }
-        const url = new URL("https://data-donation.vercel.app/thanks");
+        const url = new URL("https://data-donation-2.vercel.app/thanks");
         url.searchParams.set("email", encodeURIComponent(email));
         console.log("Redirecting to:", url.toString());
         window.location.href = url.toString();
