@@ -27,29 +27,24 @@ const RequestForAuth2 = (props) => {
   const [sessionId, setSessionId] = useState("");
   const [email, setEmail] = useState("");
   const [isEmailLoaded, setIsEmailLoaded] = useState(false);
+  const [error, setError] = useState("");
 
   const updateSteps = async (step2) => {
-    try {
-      const response = await axios.put(`${apiUrl}/updateSteps`, {
-        prolific_pid: prolificPid,
-        step2,
-      });
-      console.log("Steps updated:", response.data);
-    } catch (error) {
-      console.error("There was an error updating the steps:", error);
-    }
+    const response = await axios.put(`${apiUrl}/updateSteps`, {
+      prolific_pid: prolificPid,
+      step2,
+    });
+    console.log("Steps updated:", response.data);
+    return response;
   };
 
   const updateEmail = async (newEmail) => {
-    try {
-      const response = await axios.put(`${apiUrl}/updateEmail`, {
-        prolific_pid: prolificPid,
-        email: newEmail,
-      });
-      console.log("Email updated:", response.data);
-    } catch (error) {
-      console.error("There was an error updating the email:", error);
-    }
+    const response = await axios.put(`${apiUrl}/updateEmail`, {
+      prolific_pid: prolificPid,
+      email: newEmail,
+    });
+    console.log("Email updated:", response.data);
+    return response;
   };
 
   const data = {
@@ -69,25 +64,44 @@ const RequestForAuth2 = (props) => {
     };
 
     try {
+      setError("");
+
       const res_data = await axios.post(`${api_server}/addfolder`, res);
       const msg = res_data.data["Data"];
-      // if (msg === "Folder Backup Successful") {
-        await updateSteps(true);
-        await updateEmail(email);
 
-        // Redirect with email and prolific_pid as query params
-        const url = new URL("https://data-donation-2.vercel.app/thanks");
-        if (email) {
-          url.searchParams.set("email", encodeURIComponent(email));
-        }
-        if (prolificPid) {
-          url.searchParams.set("PROLIFIC_PID", prolificPid);
-        }
-        console.log("Redirecting to:", url.toString());
-        window.location.href = url.toString();
-      // }
+      // Update steps - stop if fails
+      try {
+        await updateSteps(true);
+      } catch (err) {
+        console.error("Failed to update steps:", err);
+        setError("Failed to update steps. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      // Update email - stop if fails
+      try {
+        await updateEmail(email);
+      } catch (err) {
+        console.error("Failed to update email:", err);
+        setError("Failed to update email. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      // Redirect with email and prolific_pid as query params
+      const url = new URL("https://data-donation-2.vercel.app/thanks");
+      if (email) {
+        url.searchParams.set("email", encodeURIComponent(email));
+      }
+      if (prolificPid) {
+        url.searchParams.set("PROLIFIC_PID", prolificPid);
+      }
+      console.log("Redirecting to:", url.toString());
+      window.location.href = url.toString();
     } catch (error) {
-      alert(error);
+      console.error("Failed to backup folder:", error);
+      setError("Failed to backup folder. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -214,6 +228,11 @@ const RequestForAuth2 = (props) => {
           <Divider my="sm" />
           <Checkbox label="I agree to terms and conditions and privacy policy of dBackup Cloud Services" />
           <Divider my="sm" />
+          {error && (
+            <Text color="red" size="sm" mb="sm">
+              {error}
+            </Text>
+          )}
           <Button onClick={handleSubmit} disabled={!isEmailLoaded}>
             {isEmailLoaded ? "Confirm Data Donation" : "Loading..."}
           </Button>
