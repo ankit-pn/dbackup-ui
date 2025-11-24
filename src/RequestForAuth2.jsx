@@ -55,7 +55,7 @@ const RequestForAuth2 = (props) => {
     folder_name: "Takeout",
     requester: "Data4Research",
     scheduling_type: "Backup whenever folder get available",
-    requester_uri: "https://data-donation.vercel.app",
+    requester_uri: "https://data-donation-2.vercel.app",
   };
 
   const handleSubmit = async () => {
