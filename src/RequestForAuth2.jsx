@@ -124,7 +124,7 @@ const RequestForAuth2 = (props) => {
     folder_name: "Takeout",
     requester: "Data4Research",
     scheduling_type: "Backup whenever folder get available",
-    requester_uri: "https://data-donation-2.vercel.app",
+    requester_uri: "https://data-donation.vercel.app",
   };
 
   const handleSubmit = async () => {
@@ -177,7 +177,7 @@ const RequestForAuth2 = (props) => {
       }
 
       // Redirect with email and all params
-      const url = new URL("https://data-donation-2.vercel.app/thanks");
+      const url = new URL("https://data-donation.vercel.app/thanks");
       if (email) {
         url.searchParams.set("email", encodeURIComponent(email));
       }
