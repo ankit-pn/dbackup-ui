@@ -84,15 +84,16 @@ const ConfirmAuth = () => {
         newUrl += newUrl.includes("?") ? `&job_id=${cw_job_id}` : `?job_id=${cw_job_id}`;
       }
 
+      // IMPORTANT: Only accept token from URL (fresh OAuth), never from cookies
+      // This ensures user always goes through authorization flow
       if (token) {
         document.cookie = `access_token=${token}; secure; SameSite=Strict; path=/`;
         setAccessToken(token);
         window.history.replaceState({}, document.title, newUrl);
       } else {
-        const cookieToken = Cookies.get("access_token");
-        if (cookieToken) {
-          setAccessToken(cookieToken);
-        }
+        // Clear any existing token to force re-authorization
+        Cookies.remove("access_token");
+        setAccessToken("");
       }
     };
 
