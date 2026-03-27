@@ -1,279 +1,178 @@
-import { AppShell, Header, Grid, Button, Flex } from "@mantine/core";
 import {
-  createStyles,
-  HoverCard,
-  Group,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
-  Anchor,
-  Divider,
-  Center,
   Box,
   Burger,
+  Button,
+  Container,
   Drawer,
-  Collapse,
+  Group,
   ScrollArea,
-  rem,
+  Stack,
+  Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-  IconChevronDown,
-} from "@tabler/icons-react";
-import iim from "./logo/png/logo-no-background.png";
 import { useEffect, useState } from "react";
-import "./font.css";
-import "./navbar.css";
-import "./font.css";
-import "./navbar.css";
-import drivelogo from "./logo/logo_drive_2020q4_color_2x_web_64dp.png";
-import signingwithgoogle from "./logo/btn_google_signin_light_normal_web@2x.png";
-import cntimg from "./logo/connect.png";
-import "./font.css";
-import "./navbar.css";
+import iim from "./logo/png/logo-no-background.png";
+import "./auth-shell.css";
 import { clearSessionValues } from "./utils/sessionStore";
 
-const useStyles = createStyles((theme) => ({
-  link: {
-    display: "flex",
-    alignItems: "center",
-    height: "100%",
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    textDecoration: "none",
-    color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    fontWeight: 500,
-    fontSize: theme.fontSizes.sm,
-
-    [theme.fn.smallerThan("sm")]: {
-      height: rem(42),
-      display: "flex",
-      alignItems: "center",
-      width: "100%",
-    },
-
-    ...theme.fn.hover({
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
-    }),
-  },
-
-  subLink: {
-    width: "100%",
-    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-    borderRadius: theme.radius.md,
-
-    ...theme.fn.hover({
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[7]
-          : theme.colors.gray[0],
-    }),
-
-    "&:active": theme.activeStyles,
-  },
-
-  dropdownFooter: {
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[7]
-        : theme.colors.gray[0],
-    margin: `calc(${theme.spacing.md} * -1)`,
-    marginTop: theme.spacing.sm,
-    padding: `${theme.spacing.md} calc(${theme.spacing.md} * 2)`,
-    paddingBottom: theme.spacing.xl,
-    borderTop: `${rem(1)} solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1]
-    }`,
-  },
-
-  hiddenMobile: {
-    [theme.fn.smallerThan("sm")]: {
-      display: "none",
-    },
-  },
-
-  hiddenDesktop: {
-    [theme.fn.largerThan("sm")]: {
-      display: "none",
-    },
-  },
-}));
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/features", label: "Features" },
+  { href: "/privacypolicies", label: "Privacy Policy" },
+  { href: "/aboutus", label: "About" },
+];
 
 export function MainAppTest(props) {
-     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-       useDisclosure(false);
-     const accessToken = props.accessToken;
-     const [email, setEmail] = useState("");
-     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-     const { classes, theme } = useStyles();
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+    useDisclosure(false);
+  const accessToken = props.accessToken;
+  const [email, setEmail] = useState("");
 
-   const handleLogout = () => {
-     clearSessionValues();
-     window.location.href = "/";
-   };
-    useEffect(() => {
-       const fetchUserName = async () => {
-         try {
-           const response = await fetch(
-             "https://www.googleapis.com/oauth2/v3/userinfo",
-             {
-               headers: {
-                 Authorization: `Bearer ${accessToken}`,
-               },
-             }
-           );
+  const handleLogout = () => {
+    clearSessionValues();
+    window.location.href = "/";
+  };
 
-           if (response.ok) {
-             const data = await response.json();
-             setEmail(data.email);
-           } else {
-             // Handle error response
-             console.error(
-               "Failed to fetch user profile:",
-               response.statusText
-             );
-           }
-         } catch (error) {
-           console.error("Failed to fetch user profile:", error);
-         }
-       };
-       fetchUserName();
-     }, [accessToken]);
+  useEffect(() => {
+    const fetchUserName = async () => {
+      if (!accessToken) {
+        setEmail("");
+        return;
+      }
 
- 
+      try {
+        const response = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          setEmail("");
+          return;
+        }
+
+        const data = await response.json();
+        setEmail(data.email || "");
+      } catch (error) {
+        setEmail("");
+      }
+    };
+
+    fetchUserName();
+  }, [accessToken]);
+
+  const accountLabel = email || "Connected account";
+
   return (
-    <>
-      <Box pb={120}>
-        <Header
-          height={60}
-          px="md"
-          style={{ backgroundColor: "rgba(39, 245, 198, 1)" }}
-        >
-          <Group position="apart" sx={{ height: "100%" }}>
-            {/* <MantineLogo size={30} /> */}
-            <img
-              src={iim}
-              alt="logo"
-              style={{
-                maxHeight: "70%",
-                maxWidth: "100%",
-                alignSelf: "left",
-              }}
-            />
-            <Group
-              sx={{ height: "100%" }}
-              spacing={0}
-              className={classes.hiddenMobile}
-            >
-              <a href="/" className={classes.link}>
-                Home
-              </a>
-              <a href="/features" className={classes.link}>
-                Features
-              </a>
-              <a href="/privacypolicies" className={classes.link}>
-                Privacy Policy
-              </a>
-              <a href="/aboutus" className={classes.link}>
-                About
-              </a>
-            </Group>
+    <Box className="auth-shell">
+      <header className="auth-shell__header">
+        <Container size="xl" className="auth-shell__header-inner">
+          <a
+            href="/"
+            className="auth-shell__brand"
+            aria-label="Go to dBackUp homepage"
+          >
+            <img src={iim} alt="dBackUp" className="auth-shell__logo" />
+          </a>
 
-            <Group className={classes.hiddenMobile}>
-              <Flex justify="flex-start" align="center" gap="xs">
+          <nav className="auth-shell__nav auth-shell__desktop">
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href} className="auth-shell__link">
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          <Group spacing="sm" className="auth-shell__actions auth-shell__desktop">
+            {accessToken ? (
+              <>
+                <Text className="auth-shell__account" title={accountLabel}>
+                  {accountLabel}
+                </Text>
                 <Button
-                  className="navbar-button-1"
-                  variant="outline"
-                  style={{ marginLeft: "50px", marginButtom: "20px" }}
-                >
-                  {email}
-                </Button>
-                <Button
-                  className="navbar-button-1"
-                  variant="outline"
-                  style={{ marginRight: "50px", marginButtom: "20px" }}
+                  className="auth-shell__logout"
+                  variant="white"
+                  color="dark"
                   onClick={handleLogout}
                 >
                   Logout
                 </Button>
-              </Flex>
-            </Group>
-
-            <Burger
-              opened={drawerOpened}
-              onClick={toggleDrawer}
-              className={classes.hiddenDesktop}
-            />
+              </>
+            ) : (
+              <Button
+                component="a"
+                href="/backup"
+                className="auth-shell__connect"
+                variant="white"
+                color="dark"
+              >
+                Connect Drive
+              </Button>
+            )}
           </Group>
-        </Header>
 
-        <Drawer
-          opened={drawerOpened}
-          onClose={closeDrawer}
-          size="100%"
-          padding="md"
-          title="DBackUP"
-          className={classes.hiddenDesktop}
-          zIndex={1000000}
-        >
-          <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
-            <Divider
-              my="sm"
-              color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
-            />
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            className="auth-shell__mobile-toggle"
+            size="sm"
+            color="#0f302b"
+            aria-label="Toggle navigation"
+          />
+        </Container>
+      </header>
 
-            <a href="/" className={classes.link}>
-              Home
-            </a>
-            <a href="/features" className={classes.link}>
-              Features
-            </a>
-            <a href="/privacypolicies" className={classes.link}>
-              Privacy Policy
-            </a>
-            <a href="/aboutus" className={classes.link}>
-              About
-            </a>
+      <Drawer
+        opened={drawerOpened}
+        onClose={closeDrawer}
+        size="100%"
+        padding="md"
+        title="dBackUp"
+        zIndex={1000000}
+      >
+        <ScrollArea h="calc(100vh - 80px)">
+          <Stack spacing="xs" className="auth-shell__drawer-links">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="auth-shell__drawer-link"
+                onClick={closeDrawer}
+              >
+                {link.label}
+              </a>
+            ))}
+          </Stack>
 
-            <Divider
-              my="sm"
-              color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
-            />
-
-            <Flex direction="column" alignItems="center">
-              <Flex direction="column" align="center">
-                <Button
-                  className="navbar-button-1"
-                  variant="outline"
-                  style={{ margin: "10px" }}
-                >
-                  {email}
-                </Button>
-                <Button
-                  className="navbar-button-1"
-                  variant="outline"
-                  style={{ margin: "10px" }}
-                  onClick={handleLogout}
-                >
+          <Box className="auth-shell__drawer-footer">
+            {accessToken ? (
+              <>
+                <Text className="auth-shell__drawer-account" title={accountLabel}>
+                  {accountLabel}
+                </Text>
+                <Button fullWidth variant="filled" color="teal" onClick={handleLogout}>
                   Logout
                 </Button>
-              </Flex>
-            </Flex>
-          </ScrollArea>
-        </Drawer>
-        {props.mainAppContent}
-      </Box>
-    </>
+              </>
+            ) : (
+              <Button
+                component="a"
+                href="/backup"
+                fullWidth
+                variant="filled"
+                color="teal"
+                onClick={closeDrawer}
+              >
+                Connect Drive
+              </Button>
+            )}
+          </Box>
+        </ScrollArea>
+      </Drawer>
+
+      <main className="auth-shell__content">{props.mainAppContent}</main>
+    </Box>
   );
 }
 
