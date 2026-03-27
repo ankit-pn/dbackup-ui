@@ -7,7 +7,6 @@ import { IconChevronDown } from '@tabler/icons-react';
 import { IconTrash, IconDownload } from '@tabler/icons-react';
 import axios from 'axios'
 import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
 import "./font.css";
 import "./navbar.css";
 const api_server = process.env.REACT_APP_API_SERVER;
@@ -34,7 +33,6 @@ const MainAppContent = (props) => {
         else{
         setLoading(true)
         const res = {};
-        console.log(data)
         res['folder_name']=data['folderName']
         res['scheduling_type'] = data['scheduling_type'];
         res['access_token'] = accessToken;
@@ -89,7 +87,7 @@ const MainAppContent = (props) => {
              window.URL.revokeObjectURL(downloadUrl);
         }
         catch(error){
-            console.log(error)
+            console.error(error)
         }
     };
      const handleBfDeleteButton = async (folder_name,accessToken) => {
@@ -100,7 +98,7 @@ const MainAppContent = (props) => {
             await axios.post(url,res);
             setClick(false)
          } catch (error) {
-            console.log(error)
+            console.error(error)
          }
     }
      const handleRequestDeleteButton = async (folder_name, accessToken) => {
@@ -111,7 +109,7 @@ const MainAppContent = (props) => {
          await axios.post(url, res);
          setClick(false);
        } catch (error) {
-         console.log(error);
+         console.error(error);
        }
      };
 
@@ -125,7 +123,7 @@ const MainAppContent = (props) => {
             const response = await axios.post(url, res);
             return response.data;
           } catch (error) {
-            console.log(error);
+            console.error(error);
           }
         };
         const fetchData = async () => {
@@ -133,7 +131,6 @@ const MainAppContent = (props) => {
           const elems = await elements();
           const elems1 = elems.backup_folders;
           const elems2 = elems.request_folders;
-          console.log(elems);
           const rws1 = elems1.map((element) => (
             <tr key={element[0]}>
               <td>{element[2]}</td>
@@ -184,7 +181,7 @@ const MainAppContent = (props) => {
           setRowElements(rws1);
           }
           catch(error){
-            console.log(error);
+            console.error(error);
           }
         };
         fetchData();
@@ -278,7 +275,7 @@ const MainAppContent = (props) => {
             </Title>
             <Space h="xl" />
             <Box maw={300} mx="auto">
-              <form onSubmit={form.onSubmit((values) => console.log(values))}>
+              <form onSubmit={form.onSubmit(handleSubmit)}>
                 <TextInput
                   placeholder="Enter Folder Name"
                   label="Folder Name"
@@ -309,7 +306,7 @@ const MainAppContent = (props) => {
                 />
 
                 <Group position="right" mt="md">
-                  <Button type="submit" onClick={handleSubmit}>
+                  <Button type="submit">
                     Submit
                   </Button>
                 </Group>

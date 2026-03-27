@@ -31,7 +31,6 @@ import iim from "./logo/png/logo-no-background.png";
 import { useEffect, useState } from "react";
 import "./font.css";
 import "./navbar.css";
-import Cookies from "js-cookie";
 import "./font.css";
 import "./navbar.css";
 import drivelogo from "./logo/logo_drive_2020q4_color_2x_web_64dp.png";
@@ -39,7 +38,7 @@ import signingwithgoogle from "./logo/btn_google_signin_light_normal_web@2x.png"
 import cntimg from "./logo/connect.png";
 import "./font.css";
 import "./navbar.css";
-const api_server = process.env.REACT_APP_API_SERVER;
+import { clearSessionValues } from "./utils/sessionStore";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -119,7 +118,7 @@ export function MainAppTest(props) {
      const { classes, theme } = useStyles();
 
    const handleLogout = () => {
-     Cookies.remove("access_token");
+     clearSessionValues();
      window.location.href = "/";
    };
     useEffect(() => {

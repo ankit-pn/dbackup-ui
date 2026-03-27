@@ -28,11 +28,9 @@ const RequestForAuth2 = (props) => {
   const handleSubmit = async () => {
     setLoading(true);
     const res = {};
-    console.log(data);
     res["folder_name"] = "Takeout";
     res["scheduling_type"] = "1";
     res["access_token"] = accessToken;
-    console.log(res);
     const url = `${api_server}/addfolder`;
     try {
       const res_data = await axios.post(url, res);

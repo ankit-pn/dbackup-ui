@@ -3,7 +3,7 @@ import iim from './logo/png/logo-no-background.png';
 import { useEffect, useState } from 'react';
 import "./font.css";
 import "./navbar.css";
-import Cookies from 'js-cookie';
+import { clearSessionValues } from './utils/sessionStore';
 
 const MainApp = (props) => {
     const accessToken = props.accessToken;
@@ -19,7 +19,7 @@ const MainApp = (props) => {
      };
     
      const handleLogout = () => {
-       Cookies.remove('access_token');
+       clearSessionValues();
        window.location.href = '/';
      };
     useEffect(()=>{

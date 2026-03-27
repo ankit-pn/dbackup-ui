@@ -1,5 +1,4 @@
 import {
-  Grid,
   Button,
   Text,
   Flex,
@@ -11,23 +10,36 @@ import {
   Checkbox,
   Box,
 } from "@mantine/core";
-import iim from "./logo/png/logo-no-background.png";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
+import iim from "./logo/png/logo-no-background.png";
+import {
+  SESSION_KEYS,
+  clearSessionValues,
+  getSessionValue,
+} from "./utils/sessionStore";
 
-const api_server = process.env.REACT_APP_API_SERVER;
+const apiServer = process.env.REACT_APP_API_SERVER;
 
-const RequestForAuth2 = (props) => {
+const trackingKeys = [
+  SESSION_KEYS.prolificPid,
+  SESSION_KEYS.studyId,
+  SESSION_KEYS.sessionId,
+  SESSION_KEYS.clickworkerUser,
+  SESSION_KEYS.clickworkerUserId,
+  SESSION_KEYS.clickworkerTaskId,
+  SESSION_KEYS.clickworkerJobId,
+];
+
+const RequestForAuth2 = ({ accessToken }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const backendApiUrl = process.env.REACT_APP_API_SERVER || "https://api.dbackup.cloud";
-  const accessToken = props.accessToken;
+  const backendApiUrl =
+    process.env.REACT_APP_API_SERVER || "https://api.dbackup.cloud";
+
   const [loading, setLoading] = useState(false);
-  // Prolific params (legacy)
   const [prolificPid, setProlificPid] = useState("");
   const [studyId, setStudyId] = useState("");
   const [sessionId, setSessionId] = useState("");
-  // Clickworker params (new)
   const [clickworkerUser, setClickworkerUser] = useState("");
   const [clickworkerUserId, setClickworkerUserId] = useState("");
   const [clickworkerTaskId, setClickworkerTaskId] = useState("");
@@ -36,90 +48,6 @@ const RequestForAuth2 = (props) => {
   const [isEmailLoaded, setIsEmailLoaded] = useState(false);
   const [error, setError] = useState("");
 
-  // Get effective user ID (Clickworker or Prolific)
-  const getEffectiveUserId = () => {
-    return clickworkerUserId || prolificPid || email;
-  };
-
-  const updateSteps = async (step2) => {
-    const response = await axios.put(`${apiUrl}/updateSteps`, {
-      prolific_pid: prolificPid,
-      step2,
-    });
-    console.log("Steps updated:", response.data);
-    return response;
-  };
-
-  const updateEmail = async (newEmail) => {
-    const response = await axios.put(`${apiUrl}/updateEmail`, {
-      prolific_pid: prolificPid,
-      email: newEmail,
-    });
-    console.log("Email updated:", response.data);
-    return response;
-  };
-
-  // Track step via new unified tracking API
-  const trackStep = async (stepName) => {
-    try {
-      const userId = getEffectiveUserId();
-      if (!userId) return;
-
-      await axios.post(`${backendApiUrl}/track/step`, {
-        user_id: userId,
-        step_name: stepName,
-        donation_type: "takeout",
-        status: "completed",
-        metadata: {
-          email: email,
-          clickworker_user: clickworkerUser,
-          clickworker_task_id: clickworkerTaskId,
-          clickworker_job_id: clickworkerJobId,
-        }
-      });
-      console.log(`Step tracked: ${stepName}`);
-    } catch (err) {
-      console.error("Failed to track step:", err);
-    }
-  };
-
-  // Initialize takeout tracking
-  const initTakeoutTracking = async () => {
-    try {
-      const userId = getEffectiveUserId();
-      if (!userId) return;
-
-      await axios.post(`${backendApiUrl}/takeout/init`, {
-        user_id: userId,
-        email: email,
-        clickworker_user: clickworkerUser,
-        clickworker_user_id: clickworkerUserId,
-        task_id: clickworkerTaskId,
-        job_id: clickworkerJobId,
-      });
-      console.log("Takeout tracking initialized");
-    } catch (err) {
-      console.error("Failed to init takeout tracking:", err);
-    }
-  };
-
-  // Update takeout step
-  const updateTakeoutStep = async (stepName) => {
-    try {
-      const userId = getEffectiveUserId();
-      if (!userId) return;
-
-      await axios.put(`${backendApiUrl}/takeout/step`, {
-        user_id: userId,
-        step_name: stepName,
-        value: true,
-      });
-      console.log(`Takeout step updated: ${stepName}`);
-    } catch (err) {
-      console.error("Failed to update takeout step:", err);
-    }
-  };
-
   const data = {
     folder_name: "Takeout",
     requester: "Data4Research",
@@ -127,46 +55,115 @@ const RequestForAuth2 = (props) => {
     requester_uri: "https://data-donation.vercel.app",
   };
 
+  const clearAllSessionState = () => {
+    clearSessionValues([SESSION_KEYS.accessToken, ...trackingKeys]);
+  };
+
+  const getEffectiveUserId = () => clickworkerUserId || prolificPid || email;
+
+  const updateSteps = async (step2) =>
+    axios.put(`${apiUrl}/updateSteps`, {
+      prolific_pid: prolificPid,
+      step2,
+    });
+
+  const updateEmail = async (newEmail) =>
+    axios.put(`${apiUrl}/updateEmail`, {
+      prolific_pid: prolificPid,
+      email: newEmail,
+    });
+
+  const trackStep = async (stepName) => {
+    try {
+      const userId = getEffectiveUserId();
+      if (!userId) {
+        return;
+      }
+
+      await axios.post(`${backendApiUrl}/track/step`, {
+        user_id: userId,
+        step_name: stepName,
+        donation_type: "takeout",
+        status: "completed",
+        metadata: {
+          email,
+          clickworker_user: clickworkerUser,
+          clickworker_task_id: clickworkerTaskId,
+          clickworker_job_id: clickworkerJobId,
+        },
+      });
+    } catch (err) {
+      console.error("Failed to track step:", err);
+    }
+  };
+
+  const initTakeoutTracking = async () => {
+    try {
+      const userId = getEffectiveUserId();
+      if (!userId) {
+        return;
+      }
+
+      await axios.post(`${backendApiUrl}/takeout/init`, {
+        user_id: userId,
+        email,
+        clickworker_user: clickworkerUser,
+        clickworker_user_id: clickworkerUserId,
+        task_id: clickworkerTaskId,
+        job_id: clickworkerJobId,
+      });
+    } catch (err) {
+      console.error("Failed to initialize takeout tracking:", err);
+    }
+  };
+
+  const updateTakeoutStep = async (stepName) => {
+    try {
+      const userId = getEffectiveUserId();
+      if (!userId) {
+        return;
+      }
+
+      await axios.put(`${backendApiUrl}/takeout/step`, {
+        user_id: userId,
+        step_name: stepName,
+        value: true,
+      });
+    } catch (err) {
+      console.error("Failed to update takeout step:", err);
+    }
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
-
-    const res = {
-      folder_name: "Takeout",
-      scheduling_type: "1",
-      access_token: accessToken,
-    };
+    setError("");
 
     try {
-      setError("");
+      await axios.post(`${apiServer}/addfolder`, {
+        folder_name: "Takeout",
+        scheduling_type: "1",
+        access_token: accessToken,
+      });
 
-      const res_data = await axios.post(`${api_server}/addfolder`, res);
-      const msg = res_data.data["Data"];
-
-      // Track folder scheduled step
       await updateTakeoutStep("folder_scheduled");
       await trackStep("folder_scheduled");
 
-      // Update steps - stop if fails (legacy Prolific tracking)
       if (prolificPid) {
         try {
           await updateSteps(true);
         } catch (err) {
-          console.error("Failed to update steps:", err);
-          // Don't stop for legacy tracking failure
+          console.error("Failed to update legacy step tracking:", err);
         }
 
         try {
           await updateEmail(email);
         } catch (err) {
-          console.error("Failed to update email:", err);
-          // Don't stop for legacy tracking failure
+          console.error("Failed to update legacy email tracking:", err);
         }
       }
 
-      // Track completion
       await trackStep("complete");
 
-      // Complete takeout tracking
       try {
         const userId = getEffectiveUserId();
         if (userId) {
@@ -176,137 +173,80 @@ const RequestForAuth2 = (props) => {
         console.error("Failed to complete takeout tracking:", err);
       }
 
-      // Redirect with email and all params
-      const url = new URL("https://data-donation.vercel.app/thanks");
-      if (email) {
-        url.searchParams.set("email", encodeURIComponent(email));
-      }
-      // Include Prolific params (legacy)
+      const redirectUrl = new URL("https://data-donation.vercel.app/thanks");
+
       if (prolificPid) {
-        url.searchParams.set("PROLIFIC_PID", prolificPid);
+        redirectUrl.searchParams.set("PROLIFIC_PID", prolificPid);
       }
-      // Include Clickworker params
       if (clickworkerUserId) {
-        url.searchParams.set("user_id", clickworkerUserId);
+        redirectUrl.searchParams.set("user_id", clickworkerUserId);
       }
       if (clickworkerUser) {
-        url.searchParams.set("user", clickworkerUser);
+        redirectUrl.searchParams.set("user", clickworkerUser);
       }
       if (clickworkerTaskId) {
-        url.searchParams.set("task_id", clickworkerTaskId);
+        redirectUrl.searchParams.set("task_id", clickworkerTaskId);
       }
       if (clickworkerJobId) {
-        url.searchParams.set("job_id", clickworkerJobId);
+        redirectUrl.searchParams.set("job_id", clickworkerJobId);
       }
-      console.log("Redirecting to:", url.toString());
-      window.location.href = url.toString();
-    } catch (error) {
-      console.error("Failed to backup folder:", error);
-      setError("Failed to backup folder. Please try again.");
+
+      window.location.href = redirectUrl.toString();
+    } catch (submitError) {
+      console.error("Failed to back up folder:", submitError);
+      setError("Failed to back up folder. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  // useEffect(() => {
-  //   // Read cookies
-  //   setProlificPid(Cookies.get("prolific_pid") || "");
-  //   setStudyId(Cookies.get("study_id") || "");
-  //   setSessionId(Cookies.get("session_id") || "");
-
-  //   // Fetch email from Google
-  //   const fetchUserName = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         "https://www.googleapis.com/oauth2/v3/userinfo",
-  //         {
-  //           headers: { Authorization: `Bearer ${accessToken}` },
-  //         }
-  //       );
-  //       if (response.ok) {
-  //         const profile = await response.json();
-  //         setEmail(profile.email);
-  //       } else {
-  //         console.error("Failed to fetch user profile:", response.statusText);
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to fetch user profile:", error);
-  //     }
-  //   };
-
-  //   if (accessToken) {
-  //     fetchUserName();
-  //   }
-  // }, [accessToken]);
-
-  const clearAllCookies = () => {
-    // Clear Prolific cookies (legacy)
-    Cookies.remove("access_token");
-    Cookies.remove("prolific_pid");
-    Cookies.remove("study_id");
-    Cookies.remove("session_id");
-    // Clear Clickworker cookies (new)
-    Cookies.remove("clickworker_user");
-    Cookies.remove("clickworker_user_id");
-    Cookies.remove("clickworker_task_id");
-    Cookies.remove("clickworker_job_id");
-  };
-
   useEffect(() => {
-    // Read Prolific cookies (legacy)
-    setProlificPid(Cookies.get("prolific_pid") || "");
-    setStudyId(Cookies.get("study_id") || "");
-    setSessionId(Cookies.get("session_id") || "");
-    // Read Clickworker cookies (new)
-    setClickworkerUser(Cookies.get("clickworker_user") || "");
-    setClickworkerUserId(Cookies.get("clickworker_user_id") || "");
-    setClickworkerTaskId(Cookies.get("clickworker_task_id") || "");
-    setClickworkerJobId(Cookies.get("clickworker_job_id") || "");
+    setProlificPid(getSessionValue(SESSION_KEYS.prolificPid));
+    setStudyId(getSessionValue(SESSION_KEYS.studyId));
+    setSessionId(getSessionValue(SESSION_KEYS.sessionId));
+    setClickworkerUser(getSessionValue(SESSION_KEYS.clickworkerUser));
+    setClickworkerUserId(getSessionValue(SESSION_KEYS.clickworkerUserId));
+    setClickworkerTaskId(getSessionValue(SESSION_KEYS.clickworkerTaskId));
+    setClickworkerJobId(getSessionValue(SESSION_KEYS.clickworkerJobId));
 
-    // Fetch email from Google and validate token
-    const fetchUserName = async () => {
+    const fetchUserProfile = async () => {
       try {
-        const response = await fetch(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
-        if (response.ok) {
-          const profile = await response.json();
-          setEmail(profile.email);
-          setIsEmailLoaded(true);
-        } else {
-          console.error("Access token invalid, clearing cookies and redirecting.");
-          clearAllCookies();
-          window.location.href = "/";
+        const response = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        if (!response.ok) {
+          throw new Error("Access token invalid");
         }
-      } catch (error) {
-        console.error("Failed to fetch user profile:", error);
-        clearAllCookies();
+
+        const profile = await response.json();
+        setEmail(profile.email);
+        setIsEmailLoaded(true);
+      } catch (profileError) {
+        clearAllSessionState();
         window.location.href = "/";
       }
     };
 
-    if (accessToken) {
-      fetchUserName();
-    } else {
-      // No access token available, force logout
-      clearAllCookies();
+    if (!accessToken) {
+      clearAllSessionState();
       window.location.href = "/";
+      return;
     }
+
+    fetchUserProfile();
   }, [accessToken]);
 
-  // Initialize takeout tracking when email is loaded
   useEffect(() => {
-    if (isEmailLoaded && email) {
-      initTakeoutTracking();
-      trackStep("oauth");
-      updateTakeoutStep("oauth_completed");
+    if (!isEmailLoaded || !email) {
+      return;
     }
-  }, [isEmailLoaded, email]);
 
-  
+    initTakeoutTracking();
+    trackStep("oauth");
+    updateTakeoutStep("oauth_completed");
+  }, [email, isEmailLoaded]);
+
   return (
     <>
       <Box
@@ -326,20 +266,21 @@ const RequestForAuth2 = (props) => {
         <img src={iim} alt="logo" style={{ maxWidth: "100%" }} />
         <Divider my="md" />
         <Title order={4} align="left">
-          <Text span color="Green">
+          <Text span color="green">
             <a href={data.requester_uri}>{data.requester}</a>
           </Text>{" "}
-          is requesting to schedule the backup given folder(s) and transfer a copy to their account.
+          is requesting to schedule the backup given folder(s) and transfer a
+          copy to their account.
         </Title>
         <Divider my="md" />
         <Flex direction="column">
           <Title order={5}>
-            <Text color="Blue">Folder(s) Name:</Text>
+            <Text color="blue">Folder(s) Name:</Text>
           </Title>
           <Text>{data.folder_name}</Text>
           <Divider my="sm" />
           <Title order={5}>
-            <Text color="Blue">Scheduling Type:</Text>
+            <Text color="blue">Scheduling Type:</Text>
           </Title>
           <Text>{data.scheduling_type}</Text>
           <Divider my="sm" />
@@ -369,7 +310,7 @@ const RequestForAuth2 = (props) => {
           >
             <Loader size="md" />
             <Space h="md" />
-            <Title order={3}>Backing up folder now…</Title>
+            <Title order={3}>Backing up folder now...</Title>
           </div>
         </Overlay>
       )}
