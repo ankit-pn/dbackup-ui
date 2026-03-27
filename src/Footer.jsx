@@ -12,7 +12,7 @@ import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from '@tabler/
 
 const useStyles = createStyles((theme) => ({
   footer: {
-    marginTop: rem(120),
+    marginTop: 0,
     paddingTop: `calc(${theme.spacing.xl} * 2)`,
     paddingBottom: `calc(${theme.spacing.xl} * 2)`,
     backgroundColor: "#181c1c",
@@ -111,6 +111,7 @@ const useStyles = createStyles((theme) => ({
 
 function FooterLinks({ data }) {
   const { classes } = useStyles();
+  const currentYear = new Date().getFullYear();
 
   const groups = data.map((group) => {
     const links = group.links.map((link, index) => (
@@ -140,14 +141,14 @@ function FooterLinks({ data }) {
         <div className={classes.logo}>
           <img src={iim} alt="nan" style={{ width: "220px" }} />
           <Text size="xs" color="dimmed" className={classes.description}>
-            BackUp your data without any hustle on dBackup
+            Protect your Google Drive data with scheduled cloud backups and fast recovery.
           </Text>
         </div>
         <div className={classes.groups}>{groups}</div>
       </Container>
       <Container className={classes.afterFooter}>
         <Text color="dimmed" size="sm">
-          © 2023 Dbackup Service Ltd. All rights reserved.
+          © {currentYear} dBackUp Service Ltd. All rights reserved.
         </Text>
 
         <Group spacing={0} className={classes.social} position="right" noWrap>
