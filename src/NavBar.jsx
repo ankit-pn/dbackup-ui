@@ -12,7 +12,7 @@ const NavBar = ({mainContent}) => {
         window.location.href = `${api_server}/connect`;
     }
     const handleLoginNow = () => {
-        window.location.href = `${api_server}/login`;
+        window.location.href = `${api_server}/connect`;
     }
     const handlePrivacyButton = () => {
         window.location.href = '/privacypolicies'

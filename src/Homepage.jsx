@@ -171,7 +171,7 @@ const footerData = [
 
 function HomePage() {
   const connectUrl = apiServer ? `${apiServer}/connect` : "/connect";
-  const loginUrl = apiServer ? `${apiServer}/login` : "/login";
+  const loginUrl = apiServer ? `${apiServer}/connect` : "/connect";
 
   const handleConnectNow = () => {
     window.location.href = connectUrl;
